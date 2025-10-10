@@ -1,21 +1,20 @@
 ---
 title: "Báo cáo thực tập"
-date: "`r Sys.Date()`"
 weight: 1
 chapter: false
 ---
 
 # Báo cáo thực tập
 ### Thông tin sinh viên:
-&emsp; **Họ và tên:** Nguyễn Văn A
+&emsp; **Họ và tên:** Võ Thiên Phú
 
-&emsp; **Số điện thoại:** 0989888999
+&emsp; **Số điện thoại:** 0335072711
 
-&emsp; **Email:** Anguyenvan@gmail.com
+&emsp; **Email:** phuvo05kid@gmail.com
 
-&emsp; **Trường:** Đại học Sư phạm Kỹ thuật TP.HCM
+&emsp; **Trường:** Đại học FPT-HCM
 
-&emsp; **Ngành:** Công nghệ thông tin
+&emsp; **Ngành:** Trí Tuệ Nhân Tạo
 
 &emsp; **Lớp:** AWS082025
 
