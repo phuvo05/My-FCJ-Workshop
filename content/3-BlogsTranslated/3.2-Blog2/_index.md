@@ -8,118 +8,270 @@ pre: " <b> 3.2. </b> "
 ⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
 {{% /notice %}}
 
-# Phá vỡ các silo dữ liệu và truy vấn liền mạch các bảng Iceberg trong Amazon SageMaker từ Snowflake
+# Break down data silos and seamlessly query Iceberg tables in Amazon SageMaker from Snowflake
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+by Nidhi Gupta and Andries Engelbrecht on 15 SEP 2025 in [Advanced (300)](https://aws.amazon.com/blogs/big-data/category/learning-levels/advanced-300/), [Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/category/analytics/amazon-sagemaker-lakehouse/), [Amazon Simple Storage Service (S3)](https://aws.amazon.com/blogs/big-data/category/storage/amazon-simple-storage-services-s3/), [AWS Glue](https://aws.amazon.com/blogs/big-data/category/analytics/aws-glue/), [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/category/analytics/aws-lake-formation/), [Partner solutions](https://aws.amazon.com/blogs/big-data/category/post-types/partner-solutions/), [S3 Select](https://aws.amazon.com/blogs/big-data/category/storage/s3-select/), [Technical How-to](https://aws.amazon.com/blogs/big-data/category/post-types/technical-how-to/) [Permalink](https://aws.amazon.com/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/)  [Comments](https://aws.amazon.com/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/#Comments)  [Share](https://aws.amazon.com/vi/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/#)
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+Organizations often struggle to unify their data ecosystems across multiple platforms and services. The connectivity between [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [Snowflake’s AI Data Cloud](https://www.snowflake.com/en/) offers a powerful solution to this challenge, so businesses can take advantage of the strengths of both environments while maintaining a cohesive data strategy.
 
----
+In this post, we demonstrate how you can break down data silos and enhance your analytical capabilities by querying Apache Iceberg tables in the [lakehouse architecture of SageMaker](https://aws.amazon.com/sagemaker/lakehouse/) directly from Snowflake. With this capability, you can access and analyze data stored in [Amazon Simple Storage Service](https://aws.amazon.com/s3/) (Amazon S3) through [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html) using an [AWS Glue Iceberg REST endpoint](https://docs.aws.amazon.com/glue/latest/dg/access_catalog.html), all secured by [AWS Lake Formation](https://aws.amazon.com/lake-formation/), without the need for complex extract, transform, and load (ETL) processes or data duplication. You can also automate table discovery and refresh using [Snowflake catalog-linked databases for Iceberg](https://docs.snowflake.com/en/user-guide/tables-iceberg-catalog-linked-database). In the following sections, we show how to set up this integration so Snowflake users can seamlessly query and analyze data stored in AWS, thereby improving data accessibility, reducing redundancy, and enabling more comprehensive analytics across your entire data ecosystem.
 
-## Architecture Guidance
+## **Business use cases and key benefits**
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+The capability to query Iceberg tables in SageMaker from Snowflake delivers significant value across multiple industries:
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+* Financial services – Enhance fraud detection through unified analysis of transaction data and customer behavior patterns  
+* Healthcare – Improve patient outcomes through integrated access to clinical, claims, and research data  
+* Retail – Increase customer retention rates by connecting sales, inventory, and customer behavior data for personalized experiences  
+* Manufacturing – Boost production efficiency through unified sensor and operational data analytics  
+* Telecommunications – Reduce customer churn with comprehensive analysis of network performance and customer usage data
 
-**The solution architecture is now as follows:**
+Key benefits of this capability include:
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+* Accelerated decision-making – Reduce time to insight through integrated data access across platforms  
+* Cost optimization – Accelerate time to insight by querying data directly in storage without the need for ingestion  
+* Improved data fidelity – Reduce data inconsistencies by establishing a single source of truth  
+* Enhanced collaboration – Increase cross-functional productivity through simplified data sharing between data scientists and analysts
 
----
+By using the lakehouse architecture of SageMaker with Snowflake’s serverless and zero-tuning computational power, you can break down data silos, enabling comprehensive analytics and democratizing data access. This integration supports a modern data architecture that prioritizes flexibility, security, and analytical performance, ultimately driving faster, more informed decision-making across the enterprise.
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+## **Solution overview**
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+The following diagram shows the architecture for catalog integration between Snowflake and Iceberg tables in the lakehouse.
 
----
+![Catalog integration to query Iceberg tables in S3 bucket using Iceberg REST Catalog (IRC) with credential vending][image1]
 
-## Technology Choices and Communication Scope
+The workflow consists of the following components:
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+* Data storage and management:  
+  * Amazon S3 serves as the primary storage layer, hosting the Iceberg table data  
+  * The Data Catalog maintains the metadata for these tables  
+  * Lake Formation provides credential vending  
+* Authentication flow:  
+  * Snowflake initiates queries using a catalog integration configuration  
+  * Lake Formation vends temporary credentials through [AWS Security Token Service](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) (AWS STS)  
+  * These credentials are automatically refreshed based on the configured refresh interval  
+* Query flow:  
+  * Snowflake users submit queries against the mounted Iceberg tables  
+  * The AWS Glue Iceberg REST endpoint processes these requests  
+  * Query execution uses Snowflake’s compute resources while reading directly from Amazon S3  
+  * Results are returned to Snowflake users while maintaining all security controls
 
----
+There are four patterns to query Iceberg tables in SageMaker from Snowflake:
 
-## The Pub/Sub Hub
+* Iceberg tables in an S3 bucket using an AWS Glue Iceberg REST endpoint and Snowflake Iceberg REST catalog integration, with credential vending from Lake Formation  
+* Iceberg tables in an S3 bucket using an AWS Glue Iceberg REST endpoint and Snowflake Iceberg REST catalog integration, using Snowflake external volumes to Amazon S3 data storage  
+* Iceberg tables in an S3 bucket using AWS Glue API catalog integration, also using Snowflake external volumes to Amazon S3  
+* [Amazon S3 Tables using Iceberg REST catalog integration with credential vending](https://aws.amazon.com/blogs/storage/connect-snowflake-to-s3-tables-using-the-sagemaker-lakehouse-iceberg-rest-endpoint/) from Lake Formation
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+In this post, we implement the first of these four access patterns using [catalog integration](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration-rest#sigv4-glue) for the AWS Glue Iceberg REST endpoint with [Signature Version 4 (SigV4)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html) authentication in Snowflake.
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+## **Prerequisites**
 
----
+You must have the following prerequisites:
 
-## Core Microservice
+* A [Snowflake account](https://signup.snowflake.com/).  
+* An [AWS Identity and Access Management](https://aws.amazon.com/iam/) (IAM) role that is a Lake Formation data lake administrator in your AWS account. A data lake administrator is an IAM principal that can register Amazon S3 locations, access the Data Catalog, grant Lake Formation permissions to other users, and view [AWS CloudTrail](https://aws.amazon.com/cloudtrail). See [Create a data lake administrator](https://docs.aws.amazon.com/lake-formation/latest/dg/initial-LF-setup.html#create-data-lake-admin) for more information.  
+* An existing [AWS Glue](https://aws.amazon.com/glue/) database named iceberg\_db and Iceberg table named customer with data stored in an S3 general purpose bucket with a unique name. To create the table, refer to the [table schema](https://github.com/gregrahn/tpch-kit/blob/master/dbgen/dss.ddl) and [dataset](https://github.com/gregrahn/tpch-kit/blob/master/ref_data/1/customer.tbl.1).  
+* A user-defined IAM role that Lake Formation assumes when accessing the data in the aforementioned S3 location to vend scoped credentials (see [Requirements for roles used to register locations](https://docs.aws.amazon.com/lake-formation/latest/dg/registration-role.html)). For this post, we use the IAM role LakeFormationLocationRegistrationRole.
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+The solution takes approximately 30–45 minutes to set up. Cost varies based on data volume and query frequency. Use the [AWS Pricing Calculator](https://calculator.aws/#/) for specific estimates.
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+## **Create an IAM role for Snowflake**
 
----
+To create an IAM role for Snowflake, you first create a policy for the role:
 
-## Front Door Microservice
+1. On the IAM console, choose Policies in the navigation pane.  
+2. Choose Create policy.  
+3. Choose the JSON editor and enter the following policy (provide your AWS Region and account ID), then choose Next.
+```yml
+{  
+     "Version": "2012-10-17",  
+     "Statement": \[  
+         {  
+             "Sid": "AllowGlueCatalogTableAccess",  
+             "Effect": "Allow",  
+             "Action": \[  
+                 "glue:GetCatalog",  
+                 "glue:GetCatalogs",  
+                 "glue:GetPartitions",  
+                 "glue:GetPartition",  
+                 "glue:GetDatabase",  
+                 "glue:GetDatabases",  
+                 "glue:GetTable",  
+                 "glue:GetTables",  
+                 "glue:UpdateTable"  
+             \],  
+             "Resource": \[  
+                 "arn:aws:glue:\<region\>:\<account-id\>:catalog",  
+                 "arn:aws:glue:\<region\>:\<account-id\>:database/iceberg\_db",  
+                 "arn:aws:glue:\<region\>:\<account-id\>:table/iceberg\_db/\*",  
+             \]  
+         },  
+         {  
+             "Effect": "Allow",  
+             "Action": \[  
+                 "lakeformation:GetDataAccess"  
+             \],  
+             "Resource": "\*"  
+         }  
+     \]
 
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
+ }
+```
+4. Enter iceberg-table-access as the policy name.  
+5. Choose Create policy.
 
----
+Now you can create the role and attach the policy you created.
 
-## Staging ER7 Microservice
+6. Choose Roles in the navigation pane.  
+7. Choose Create role.  
+8. Choose AWS account.  
+9. Under Options, select Require External Id and enter an external ID of your choice.  
+10. Choose Next.  
+11. Choose the policy you created (iceberg-table-access policy).  
+12. Enter snowflake\_access\_role as the role name.  
+13. Choose Create role.
 
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
+## **Configure Lake Formation access controls**
 
----
+To configure your Lake Formation access controls, first set up the application integration:
 
-## New Features in the Solution
+1. Sign in to the Lake Formation console as a data lake administrator.  
+2. Choose Administration in the navigation pane.  
+3. Select Application integration settings.  
+4. Enable Allow external engines to access data in Amazon S3 locations with full table access.  
+5. Choose Save.
 
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Now you can grant permissions to the IAM role.
+
+6. Choose Data permissions in the navigation pane.  
+7. Choose Grant.  
+8. Configure the following settings:  
+   1. For Principals, select IAM users and roles and choose snowflake\_access\_role.  
+   2. For Resources, select Named Data Catalog resources.  
+   3. For Catalog, choose your AWS account ID.  
+   4. For Database, choose iceberg\_db.  
+   5. For Table, choose customer.  
+   6. For Permissions, select SUPER.  
+9. Choose Grant.
+
+SUPER access is required for mounting the Iceberg table in Amazon S3 as a Snowflake table.
+
+## **Register the S3 data lake location**
+
+Complete the following steps to register the S3 data lake location:
+
+1. As data lake administrator on the Lake Formation console, choose Data lake locations in the navigation pane.  
+2. Choose Register location.  
+3. Configure the following:  
+   1. For S3 path, enter the S3 path to the bucket where you will store your data.  
+   2. For IAM role, choose LakeFormationLocationRegistrationRole.  
+   3. For Permission mode, choose Lake Formation.  
+4. Choose Register location.
+
+## **Set up the Iceberg REST integration in Snowflake**
+
+Complete the following steps to set up the Iceberg REST integration in Snowflake:
+
+1. Log in to Snowflake as an admin user.  
+2. Execute the following SQL command (provide your Region, account ID, and external ID that you provided during IAM role creation):
+```yml
+CREATE OR REPLACE CATALOG INTEGRATION glue\_irc\_catalog\_int  
+CATALOG\_SOURCE \= ICEBERG\_REST  
+TABLE\_FORMAT \= ICEBERG  
+CATALOG\_NAMESPACE \= 'iceberg\_db'  
+REST\_CONFIG \= (  
+    CATALOG\_URI \= 'https://glue.\<region\>.amazonaws.com/iceberg'  
+    CATALOG\_API\_TYPE \= AWS\_GLUE  
+    CATALOG\_NAME \= '\<account-id\>'  
+    ACCESS\_DELEGATION\_MODE \= VENDED\_CREDENTIALS  
+)  
+REST\_AUTHENTICATION \= (  
+    TYPE \= SIGV4  
+    SIGV4\_IAM\_ROLE \= 'arn:aws:iam::\<account-id\>:role/snowflake\_access\_role'  
+    SIGV4\_SIGNING\_REGION \= '\<region\>'  
+    SIGV4\_EXTERNAL\_ID \= '\<external-id\>'  
+)  
+REFRESH\_INTERVAL\_SECONDS \= 120
+
+ENABLED \= TRUE;
+```
+3. Execute the following SQL command and retrieve the value for API\_AWS\_IAM\_USER\_ARN:
+```yml
+DESCRIBE CATALOG INTEGRATION glue\_irc\_catalog\_int;
+```
+4. On the IAM console, update the trust relationship for snowflake\_access\_role with the value for API\_AWS\_IAM\_USER\_ARN:
+```yml
+{  
+    "Version": "2012-10-17",  
+    "Statement": \[  
+        {  
+            "Sid": "",  
+            "Effect": "Allow",  
+            "Principal": {  
+                "AWS": \[  
+                   "\<API\_AWS\_IAM\_USER\_ARN\>"  
+                \]  
+            },  
+            "Action": "sts:AssumeRole",  
+            "Condition": {  
+                "StringEquals": {  
+                    "sts:ExternalId": \[  
+                        "\<external-id\>"  
+                    \]  
+                }  
+            }  
+        }  
+    \]
+
+}
+```
+5. Verify the catalog integration:
+```yml
+SELECT SYSTEM$VERIFY\_CATALOG\_INTEGRATION('glue\_irc\_catalog\_int');
+```
+6. Mount the S3 table as a Snowflake table:
+```yml
+CREATE OR REPLACE ICEBERG TABLE s3iceberg\_customer  
+ CATALOG \= 'glue\_irc\_catalog\_int'  
+ CATALOG\_NAMESPACE \= 'iceberg\_db'  
+ CATALOG\_TABLE\_NAME \= 'customer'
+
+ AUTO\_REFRESH \= TRUE;
+```
+## **Query the Iceberg table from Snowflake**
+
+To test the configuration, log in to Snowflake as an admin user and run the following sample query:
+```yml
+SELECT \* FROM s3iceberg\_customer LIMIT 10;
+```
+## **Clean up**
+
+To clean up your resources, complete the following steps:
+
+1. Delete the database and table in AWS Glue.  
+2. Drop the Iceberg table, catalog integration, and database in Snowflake:
+```yml
+DROP ICEBERG TABLE iceberg\_customer;
+
+DROP CATALOG INTEGRATION glue\_irc\_catalog\_int;
+
+Make sure all resources are properly cleaned up to avoid unexpected charges.
+```
+## **Conclusion**
+
+In this post, we demonstrated how to establish a secure and efficient connection between your Snowflake environment and SageMaker to query Iceberg tables in Amazon S3. This capability can help your organization maintain a single source of truth while also letting teams use their preferred analytics tools, ultimately breaking down data silos and enhancing collaborative analysis capabilities.
+
+To further explore and implement this solution in your environment, consider the following resources:
+
+* Technical documentation:  
+  * Review the [Amazon SageMaker Lakehouse User Guide](https://docs.aws.amazon.com/sagemaker-unified-studio/latest/userguide/lakehouse.html)  
+  * Explore [Security in AWS Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/security.html) for best practices to optimize your security controls  
+  * Learn more about [Iceberg table format](https://iceberg.apache.org/) and its benefits for data lakes  
+  * Refer to [Configuring secure access from Snowflake to Amazon S3](https://docs.snowflake.com/en/user-guide/data-load-s3-config)  
+* Related blog posts:  
+  * [Build real-time data lakes with Snowflake and Amazon S3 Tables](https://aws.amazon.com/blogs/apn/build-real-time-data-lakes-with-snowflake-and-amazon-s3-tables/)  
+  * [Simplify data access for your enterprise using Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/simplify-data-access-for-your-enterprise-using-amazon-sagemaker-lakehouse/)
+
+These resources can help you to implement and optimize this integration pattern for your specific use case. As you begin this journey, remember to start small, validate your architecture with test data, and gradually scale your implementation based on your organization’s needs.
