@@ -4,104 +4,148 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
 Tại phần này, bạn cần tóm tắt các nội dung trong workshop mà bạn **dự tính** sẽ làm.
 
-# IoT Weather Platform for Lab Research  
-## Giải pháp AWS Serverless hợp nhất cho giám sát thời tiết thời gian thực  
+# FitAI Challenge  
+## Ứng dụng hỗ trợ người dùng giảm cân dựa trên các thử thách về bài tập thể dục, tích hợp AI để theo dõi, đánh giá.
 
-### 1. Tóm tắt điều hành  
-IoT Weather Platform được thiết kế dành cho nhóm *ITea Lab* tại TP. Hồ Chí Minh nhằm nâng cao khả năng thu thập và phân tích dữ liệu thời tiết. Nền tảng hỗ trợ tối đa 5 trạm thời tiết, có khả năng mở rộng lên 10–15 trạm, sử dụng thiết bị biên Raspberry Pi kết hợp cảm biến ESP32 để truyền dữ liệu qua MQTT. Nền tảng tận dụng các dịch vụ AWS Serverless để cung cấp giám sát thời gian thực, phân tích dự đoán và tiết kiệm chi phí, với quyền truy cập giới hạn cho 5 thành viên phòng lab thông qua Amazon Cognito.  
+### 1. Tóm tắt điều hành 
+FitAI Challenge là website được phát triển dành cho người Việt Nam, nhằm thúc đẩy phong trào tập luyện thể dục thể hình thông qua các thử thách thể thao có yếu tố gamification và trí tuệ nhân tạo (AI). Website sử dụng AI Camera để nhận diện và đếm động tác tập luyện như push-up, squat, plank, jumping jack,... đồng thời phân tích tư thế nhằm đưa ra đánh giá chính xác.
+Người dùng có thể tham gia thử thách cá nhân để nhận điểm thưởng FitPoints khi hoàn thành nhiệm vụ, và quy đổi chúng thành voucher, quà tặng, hoặc ưu đãi từ các đối tác thương mại.
+FitAI Challenge hướng đến đối tượng sinh viên, giới trẻ, và người đi làm - những người cần động lực duy trì thói quen tập luyện trong cuộc sống bận rộn.
 
-### 2. Tuyên bố vấn đề  
+### 2. Tuyên bố vấn đề 
 *Vấn đề hiện tại*  
-Các trạm thời tiết hiện tại yêu cầu thu thập dữ liệu thủ công, khó quản lý khi có nhiều trạm. Không có hệ thống tập trung cho dữ liệu hoặc phân tích thời gian thực, và các nền tảng bên thứ ba thường tốn kém và quá phức tạp.  
+Tại Việt Nam, các ứng dụng tập luyện hiện có phần lớn tập trung vào hướng dẫn hoặc đếm bước cơ bản, chưa có nền tảng nào kết hợp giữa AI nhận diện động tác, gamification và cộng đồng thử thách thể thao online.
+Người dùng thường thiếu động lực để tập đều đặn, không có công cụ đánh giá chính xác hiệu suất tập luyện. Ngoài ra, các phòng gym hoặc thương hiệu thể thao cũng thiếu kênh tương tác sáng tạo với nhóm khách hàng trẻ năng động. 
 
 *Giải pháp*  
-Nền tảng sử dụng AWS IoT Core để tiếp nhận dữ liệu MQTT, AWS Lambda và API Gateway để xử lý, Amazon S3 để lưu trữ (bao gồm data lake), và AWS Glue Crawlers cùng các tác vụ ETL để trích xuất, chuyển đổi, tải dữ liệu từ S3 data lake sang một S3 bucket khác để phân tích. AWS Amplify với Next.js cung cấp giao diện web, và Amazon Cognito đảm bảo quyền truy cập an toàn. Tương tự như Thingsboard và CoreIoT, người dùng có thể đăng ký thiết bị mới và quản lý kết nối, nhưng nền tảng này hoạt động ở quy mô nhỏ hơn và phục vụ mục đích sử dụng nội bộ. Các tính năng chính bao gồm bảng điều khiển thời gian thực, phân tích xu hướng và chi phí vận hành thấp.  
+FitAI Challenge sử dụng AI Camera để nhận diện, đếm và đánh giá độ chính xác của động tác tập luyện thông qua Computer Vision.
+Toàn bộ dữ liệu tập luyện của người dùng được lưu trữ và xử lý qua AWS Cloud với kiến trúc serverless:
+
+AWS Lambda: xử lý dữ liệu AI và yêu cầu backend.
+AWS S3: lưu trữ video, hình ảnh, và kết quả tạm thời.
+Website được phát triển bằng React Native với giao diện thân thiện, trực quan.
+Người dùng có thể:
+Tham gia thử thách cá nhân, nhóm hoặc toàn quốc.
+Nhận FitPoints khi hoàn thành bài tập.
+Đổi FitPoints lấy voucher hoặc quà từ đối tác (Shopee, Grab, CGV,…).
+Theo dõi bảng xếp hạng và chia sẻ thành tích lên mạng xã hội.
 
 *Lợi ích và hoàn vốn đầu tư (ROI)*  
-Giải pháp tạo nền tảng cơ bản để các thành viên phòng lab phát triển một nền tảng IoT lớn hơn, đồng thời cung cấp nguồn dữ liệu cho những người nghiên cứu AI phục vụ huấn luyện mô hình hoặc phân tích. Nền tảng giảm bớt báo cáo thủ công cho từng trạm thông qua hệ thống tập trung, đơn giản hóa quản lý và bảo trì, đồng thời cải thiện độ tin cậy dữ liệu. Chi phí hàng tháng ước tính 0,66 USD (theo AWS Pricing Calculator), tổng cộng 7,92 USD cho 12 tháng. Tất cả thiết bị IoT đã được trang bị từ hệ thống trạm thời tiết hiện tại, không phát sinh chi phí phát triển thêm. Thời gian hoàn vốn 6–12 tháng nhờ tiết kiệm đáng kể thời gian thao tác thủ công.  
+Đối với người dùng:
+Tạo động lực luyện tập mỗi ngày thông qua cơ chế thử thách và phần thưởng.
+Được AI hỗ trợ đánh giá và ghi nhận thành tích minh bạch.
+Gắn kết cộng đồng tập luyện thông qua leaderboard và feed chia sẻ.
+Đối với doanh nghiệp đối tác:
+Kênh quảng bá thương hiệu gắn liền với lối sống lành mạnh.
+Tiếp cận tệp khách hàng trẻ – năng động – có ý thức về sức khỏe.
+Đối với đội ngũ phát triển:
+Mở ra mô hình kinh doanh “Fitness + Gamification + Thương mại điện tử” độc đáo tại Việt Nam.
+Cấu trúc cloud serverless giúp giảm chi phí vận hành và dễ mở rộng.
+MVP có thể phát triển trong 3 tháng đầu, với chi phí hạ tầng thấp (ước tính 0,80 USD/tháng trên AWS). 
 
 ### 3. Kiến trúc giải pháp  
-Nền tảng áp dụng kiến trúc AWS Serverless để quản lý dữ liệu từ 5 trạm dựa trên Raspberry Pi, có thể mở rộng lên 15 trạm. Dữ liệu được tiếp nhận qua AWS IoT Core, lưu trữ trong S3 data lake và xử lý bởi AWS Glue Crawlers và ETL jobs để chuyển đổi và tải vào một S3 bucket khác cho mục đích phân tích. Lambda và API Gateway xử lý bổ sung, trong khi Amplify với Next.js cung cấp bảng điều khiển được bảo mật bởi Cognito.  
+FitAI Challenge là nền tảng huấn luyện thể thao thông minh áp dụng kiến trúc AWS Serverless kết hợp AI/ML pipeline.
+Mục tiêu của hệ thống là ghi nhận dữ liệu luyện tập, phân tích hiệu suất, và sinh phản hồi tự động bằng AI để huấn luyện người dùng một cách cá nhân hóa.
+Dữ liệu từ ứng dụng web được gửi lên Amazon API Gateway, xử lý bởi AWS Lambda (Java) và lưu trữ trong Amazon S3 cùng Docker Database. 
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
+![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture.png)
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+Dịch vụ AWS sử dụng:
+| **Dịch vụ**                                   | **Vai trò**                                                                       |
+| --------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Amazon Route 53**                           | Quản lý tên miền và định tuyến lưu lượng đến CloudFront.                          |
+| **AWS WAF**                                   | Bảo vệ tầng frontend và API khỏi các tấn công DDoS, OWASP.                        |
+| **Amazon CloudFront**                         | Phân phối nội dung tĩnh (web app build từ Java web, HTML, CSS, JS).               |
+| **Amazon API Gateway**                        | Tiếp nhận yêu cầu từ frontend và chuyển tiếp đến các Lambda.                      |
+| **AWS Lambda (Java)**                         | Xử lý logic nghiệp vụ (đăng ký, đăng nhập, upload dữ liệu, scoring, AI pipeline). |
+| **AWS Step Functions & SQS**                  | Điều phối workflow giữa các Lambda và SageMaker/Bedrock.                          |
+| **Amazon Cognito**                            | Xác thực người dùng, quản lý phiên đăng nhập và phân quyền.                       |
+| **Amazon S3**                                 | Lưu trữ dữ liệu thô, video, ảnh và kết quả phân tích.                             |
+| **Docker**                                    | Chạy backend Java Spring Boot API và lưu trữ database (PostgreSQL hoặc MongoDB).  |
+| **Amazon SageMaker**                          | Chạy inference mô hình computer vision/pose estimation.             |
+| **Amazon Bedrock**                            | Sinh phản hồi bằng ngôn ngữ tự nhiên, gợi ý luyện tập, tổng kết kết quả.          |
+| **Amazon SES**                                | Gửi email xác thực và thông báo kết quả người dùng.                               |
+| **Amazon CloudWatch**                         | Theo dõi log, giám sát Lambda, chi phí và hiệu suất.                              |
+| **IAM**                                       | Quản lý quyền truy cập và bảo mật giữa các dịch vụ.                               |
+| **AWS CodePipeline / CodeBuild / CodeDeploy** | CI/CD pipeline để tự động triển khai Java backend và Lambda.                      |
 
-*Dịch vụ AWS sử dụng*  
-- *AWS IoT Core*: Tiếp nhận dữ liệu MQTT từ 5 trạm, mở rộng lên 15.  
-- *AWS Lambda*: Xử lý dữ liệu và kích hoạt Glue jobs (2 hàm).  
-- *Amazon API Gateway*: Giao tiếp với ứng dụng web.  
-- *Amazon S3*: Lưu trữ dữ liệu thô (data lake) và dữ liệu đã xử lý (2 bucket).  
-- *AWS Glue*: Crawlers lập chỉ mục dữ liệu, ETL jobs chuyển đổi và tải dữ liệu.  
-- *AWS Amplify*: Lưu trữ giao diện web Next.js.  
-- *Amazon Cognito*: Quản lý quyền truy cập cho người dùng phòng lab.  
+**Thiết kế thành phần**
 
-*Thiết kế thành phần*  
-- *Thiết bị biên*: Raspberry Pi thu thập và lọc dữ liệu cảm biến, gửi tới IoT Core.  
-- *Tiếp nhận dữ liệu*: AWS IoT Core nhận tin nhắn MQTT từ thiết bị biên.  
-- *Lưu trữ dữ liệu*: Dữ liệu thô lưu trong S3 data lake; dữ liệu đã xử lý lưu ở một S3 bucket khác.  
-- *Xử lý dữ liệu*: AWS Glue Crawlers lập chỉ mục dữ liệu; ETL jobs chuyển đổi để phân tích.  
-- *Giao diện web*: AWS Amplify lưu trữ ứng dụng Next.js cho bảng điều khiển và phân tích thời gian thực.  
-- *Quản lý người dùng*: Amazon Cognito giới hạn 5 tài khoản hoạt động.  
+Frontend Layer:
+
+Web app hiển thị giao diện người dùng, kết nối đến API Gateway.
+
+Nội dung được build và deploy lên S3 + CloudFront.
+
+Người dùng truy cập qua Route 53 → WAF → CloudFront → API Gateway.
+
+Application Layer:
+
+API Gateway tiếp nhận yêu cầu từ frontend.
+
+Lambda (Java) thực thi các chức năng nghiệp vụ:
+
+AuthLambda: đăng nhập / xác thực người dùng.
+
+UploadLambda: nhận dữ liệu tập luyện, hình ảnh hoặc video.
+
+AIPipelineLambda: kích hoạt workflow AI (SageMaker + Bedrock).
+
+SaveResultLambda: lưu kết quả huấn luyện và phản hồi AI.
 
 ### 4. Triển khai kỹ thuật  
 *Các giai đoạn triển khai*  
-Dự án gồm 2 phần — thiết lập trạm thời tiết biên và xây dựng nền tảng thời tiết — mỗi phần trải qua 4 giai đoạn:  
-1. *Nghiên cứu và vẽ kiến trúc*: Nghiên cứu Raspberry Pi với cảm biến ESP32 và thiết kế kiến trúc AWS Serverless (1 tháng trước kỳ thực tập).  
-2. *Tính toán chi phí và kiểm tra tính khả thi*: Sử dụng AWS Pricing Calculator để ước tính và điều chỉnh (Tháng 1).  
-3. *Điều chỉnh kiến trúc để tối ưu chi phí/giải pháp*: Tinh chỉnh (ví dụ tối ưu Lambda với Next.js) để đảm bảo hiệu quả (Tháng 2).  
-4. *Phát triển, kiểm thử, triển khai*: Lập trình Raspberry Pi, AWS services với CDK/SDK và ứng dụng Next.js, sau đó kiểm thử và đưa vào vận hành (Tháng 2–3).  
+| Giai đoạn                        | Mô tả                                                                                      | Kết quả đạt được                         |
+|----------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------|
+| 1. Cấu hình hạ tầng AWS          | Triển khai Route 53, WAF, S3, Lambda, API Gateway, Cognito, Docker DB.                     | Hạ tầng cơ bản sẵn sàng.                 |
+| 2. CI/CD Pipeline                | Thiết lập CodeCommit + CodeBuild + CodeDeploy cho Java backend và Lambda.                  | Tự động hóa triển khai backend.          |
+| 3. Xây dựng Lambda Functions (Java) | Tạo các Lambda cho Upload, Auth, AI Pipeline, Save Result.                                 | Hoàn thiện backend serverless.           |
+| 4. AI Pipeline                   | Kết nối SageMaker (pose estimation model) và Bedrock (LLM feedback).                       | AI hoạt động trơn tru, phản hồi tự động. |
+| 5. Triển khai Web App            | Build web → Deploy lên S3 + CloudFront.                                                    | Giao diện người dùng hoạt động online.   |
+| 6. Giám sát & Tối ưu chi phí     | Dùng CloudWatch + Cost Explorer theo dõi hoạt động.                                        | Hệ thống ổn định, chi phí thấp.          |
 
-*Yêu cầu kỹ thuật*  
-- *Trạm thời tiết biên*: Cảm biến (nhiệt độ, độ ẩm, lượng mưa, tốc độ gió), vi điều khiển ESP32, Raspberry Pi làm thiết bị biên. Raspberry Pi chạy Raspbian, sử dụng Docker để lọc dữ liệu và gửi 1 MB/ngày/trạm qua MQTT qua Wi-Fi.  
-- *Nền tảng thời tiết*: Kiến thức thực tế về AWS Amplify (lưu trữ Next.js), Lambda (giảm thiểu do Next.js xử lý), AWS Glue (ETL), S3 (2 bucket), IoT Core (gateway và rules), và Cognito (5 người dùng). Sử dụng AWS CDK/SDK để lập trình (ví dụ IoT Core rules tới S3). Next.js giúp giảm tải Lambda cho ứng dụng web fullstack.  
 
 ### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: 1 tháng lên kế hoạch và đánh giá trạm cũ.  
+- *Trước thực tập (Tháng 0)*: Thiết kế kiến trúc chi tiết, thử nghiệm mô hình AI cơ bản.  
 - *Thực tập (Tháng 1–3)*:  
-    - Tháng 1: Học AWS và nâng cấp phần cứng.  
-    - Tháng 2: Thiết kế và điều chỉnh kiến trúc.  
-    - Tháng 3: Triển khai, kiểm thử, đưa vào sử dụng.  
+    - Tháng 1: Thiết lập hạ tầng, cấu hình Docker DB, Cognito, API Gateway, Lambda.  
+    - Tháng 2: Phát triển, hoàn thiện Java backend, xây dựng AI pipeline với SageMaker & Bedrock.
+    - Tháng 3: Kiểm thử & Demo	Kiểm thử hiệu suất, chạy thử với 10–20 người dùng, chuẩn bị demo cuối kỳ. 
 - *Sau triển khai*: Nghiên cứu thêm trong vòng 1 năm.  
 
 ### 6. Ước tính ngân sách  
 Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01)  
 Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.pdf).  
 
-*Chi phí hạ tầng*  
-- AWS Lambda: 0,00 USD/tháng (1.000 request, 512 MB lưu trữ).  
-- S3 Standard: 0,15 USD/tháng (6 GB, 2.100 request, 1 GB quét).  
-- Truyền dữ liệu: 0,02 USD/tháng (1 GB vào, 1 GB ra).  
-- AWS Amplify: 0,35 USD/tháng (256 MB, request 500 ms).  
-- Amazon API Gateway: 0,01 USD/tháng (2.000 request).  
-- AWS Glue ETL Jobs: 0,02 USD/tháng (2 DPU).  
-- AWS Glue Crawlers: 0,07 USD/tháng (1 crawler).  
-- MQTT (IoT Core): 0,08 USD/tháng (5 thiết bị, 45.000 tin nhắn).  
+*Chi phí hạ tầng*   
 
-*Tổng*: 0,7 USD/tháng, 8,40 USD/12 tháng  
-- *Phần cứng*: 265 USD một lần (Raspberry Pi 5 và cảm biến).  
+*Tổng*: 
 
 ### 7. Đánh giá rủi ro  
 *Ma trận rủi ro*  
-- Mất mạng: Ảnh hưởng trung bình, xác suất trung bình.  
-- Hỏng cảm biến: Ảnh hưởng cao, xác suất thấp.  
-- Vượt ngân sách: Ảnh hưởng trung bình, xác suất thấp.  
+- Kỹ thuật: AI nhận diện sai động tác hoặc lỗi xử lý dữ liệu ảnh/video.
+- Người dùng: Không duy trì thói quen luyện tập, không giữ chân được người dùng.
+- Thị trường & Đối tác: Khó mở rộng mạng lưới đối tác thưởng và thương hiệu đồng hành.
 
 *Chiến lược giảm thiểu*  
-- Mạng: Lưu trữ cục bộ trên Raspberry Pi với Docker.  
-- Cảm biến: Kiểm tra định kỳ, dự phòng linh kiện.  
-- Chi phí: Cảnh báo ngân sách AWS, tối ưu dịch vụ.  
+- Tối ưu mô hình AI qua huấn luyện liên tục và định kỳ. Ngoài ra có thể xin phép được sử dụng video của người dùng để cải thiện hiệu suất mô hình.
+- Triển khai gamification sâu hơn (chuỗi streak, nhóm bạn, phần thưởng hấp dẫn).
+- Tìm hiểu kỹ các đối tác và trình bày rõ giá trị hợp tác để có thể thiết lập hợp đồng lâu dài.
 
 *Kế hoạch dự phòng*  
-- Quay lại thu thập thủ công nếu AWS gặp sự cố.  
-- Sử dụng CloudFormation để khôi phục cấu hình liên quan đến chi phí.  
+- Khi AI gặp lỗi → thêm hệ thống fallback để dùng các phiên bản mô hình khác nhau.
+- Khi lượng người dùng giảm → tung thử thách cộng đồng theo mùa, thêm vouchers vào các dịp đặc biệt (Lễ, Tết, Hè,...).
+- Khi đối tác thương mại rút lui → duy trì cơ chế FitPoints nội bộ đổi quà nhỏ để đi tìm đối tác thay thế.
 
 ### 8. Kết quả kỳ vọng  
-*Cải tiến kỹ thuật*: Dữ liệu và phân tích thời gian thực thay thế quy trình thủ công. Có thể mở rộng tới 10–15 trạm.  
-*Giá trị dài hạn*: Nền tảng dữ liệu 1 năm cho nghiên cứu AI, có thể tái sử dụng cho các dự án tương lai.
+*Cải tiến kỹ thuật*: 
+- Hoàn thiện hệ thống AI nhận diện động tác có độ chính xác >90%.
+- Ứng dụng ổn định, đáp ứng 10.000 người dùng hoạt động đồng thời.
+- Tối ưu kiến trúc serverless giúp chi phí hạ tầng duy trì dưới 1 USD/tháng trong giai đoạn MVP.
+
+*Giá trị dài hạn*: 
+- Xây dựng cộng đồng người Việt yêu thích thể thao và sức khỏe bền vững.
+- Trở thành nền tảng tiên phong “AI + Fitness + Gamification” tại Việt Nam.
