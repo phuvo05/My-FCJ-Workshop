@@ -53,6 +53,9 @@ Dữ liệu từ ứng dụng web được gửi lên Amazon API Gateway, xử l
 
 ![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture.png)
 
+<!-- <img src="content/2-Proposal/FitAI_Challenge_Architecture.png" alt="FitAI Challenge Architecture" width="600"> -->
+
+
 Dịch vụ AWS sử dụng:
 | **Dịch vụ**                                   | **Vai trò**                                                                       |
 | --------------------------------------------- | --------------------------------------------------------------------------------- |
