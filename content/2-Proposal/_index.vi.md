@@ -49,7 +49,7 @@ FitAI Challenge là nền tảng huấn luyện thể thao thông minh áp dụn
 Mục tiêu của hệ thống là ghi nhận dữ liệu luyện tập, phân tích hiệu suất, và sinh phản hồi tự động bằng AI để huấn luyện người dùng một cách cá nhân hóa.
 Dữ liệu từ ứng dụng web được gửi lên Amazon API Gateway, xử lý bởi AWS Lambda (Java) và lưu trữ trong Amazon S3 cùng Docker Database. 
 
-![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture.png)
+![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture_1.png)
 
 Dịch vụ AWS sử dụng:
 | **Dịch vụ**                                   | **Vai trò**                                                                       |
