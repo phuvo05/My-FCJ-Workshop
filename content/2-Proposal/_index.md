@@ -4,72 +4,104 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
-
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+# FitAI Challenge
+## An application that helps users lose weight through exercise challenges, integrated with AI for tracking and evaluation
 
 ### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
+FitAI Challenge is a website developed for Vietnamese users, aiming to promote fitness and exercise culture through sports challenges that incorporate gamification and artificial intelligence (AI). The website uses an AI Camera to recognize and count exercise movements such as push-ups, squats, planks, and jumping jacks, while also analyzing posture to provide accurate evaluations.
+Users can participate in individual challenges to earn FitPoints upon completing tasks, which can be redeemed for vouchers, gifts, or discounts from partner merchants.
+FitAI Challenge targets students, young adults, and working professionals — individuals who need motivation to maintain regular workout habits amid their busy lives.
 
 ### 2. Problem Statement
 ### What’s the Problem?
-Current weather stations require manual data collection, becoming unmanageable with multiple units. There is no centralized system for real-time data or analytics, and third-party platforms are costly and overly complex.
+In Vietnam, most existing fitness applications primarily focus on basic guidance or step counting, and there is currently no platform that combines AI-based motion recognition, gamification, and an online fitness challenge community.
+Users often lack motivation to exercise consistently and do not have tools that can accurately evaluate their workout performance. In addition, gyms and sports brands also lack creative engagement channels to connect with young and active customer groups.
 
 ### The Solution
-The platform uses AWS IoT Core to ingest MQTT data, AWS Lambda and API Gateway for processing, Amazon S3 for storage (including a data lake), and AWS Glue Crawlers and ETL jobs to extract, transform, and load data from the S3 data lake to another S3 bucket for analysis. AWS Amplify with Next.js provides the web interface, and Amazon Cognito ensures secure access. Similar to Thingsboard and CoreIoT, users can register new devices and manage connections, though this platform operates on a smaller scale and is designed for private use. Key features include real-time dashboards, trend analysis, and low operational costs.
+FitAI Challenge uses an AI Camera to recognize, count, and evaluate the accuracy of workout movements through Computer Vision.
+All user workout data is stored and processed via AWS Cloud using a serverless architecture:
+AWS Lambda: processes AI data and backend requests.
+AWS S3: stores videos, images, and temporary results.
+The website is developed using React Native with a friendly and intuitive interface.
+Users can:
+Participate in individual, group, or nationwide challenges.
+Earn FitPoints upon completing exercises.
+Redeem FitPoints for vouchers or gifts from partners (Shopee, Grab, CGV, etc.).
+Track leaderboards and share achievements on social media.
+
 
 ### Benefits and Return on Investment
-The solution establishes a foundational resource for lab members to develop a larger IoT platform, serving as a study resource, and provides a data foundation for AI enthusiasts for model training or analysis. It reduces manual reporting for each station via a centralized platform, simplifying management and maintenance, and improves data reliability. Monthly costs are $0.66 USD per the AWS Pricing Calculator, with a 12-month total of $7.92 USD. All IoT equipment costs are covered by the existing weather station setup, eliminating additional development expenses. The break-even period of 6-12 months is achieved through significant time savings from reduced manual work.
+For users:
+Create daily workout motivation through challenge and reward mechanisms.
+Receive transparent performance evaluations supported by AI.
+Connect with the fitness community through leaderboards and sharing feeds.
+For partner businesses:
+A branding channel associated with a healthy lifestyle.
+Access to a young, dynamic, and health-conscious customer base.
+For the development team:
+Establish a unique “Fitness + Gamification + E-commerce” business model in Vietnam.
+Serverless cloud architecture helps reduce operating costs and allows easy scalability.
+The MVP can be developed within the first 3 months with low infrastructure costs (estimated at 0.80 USD/month on AWS).
+
 
 ### 3. Solution Architecture
-The platform employs a serverless AWS architecture to manage data from 5 Raspberry Pi-based stations, scalable to 15. Data is ingested via AWS IoT Core, stored in an S3 data lake, and processed by AWS Glue Crawlers and ETL jobs to transform and load it into another S3 bucket for analysis. Lambda and API Gateway handle additional processing, while Amplify with Next.js hosts the dashboard, secured by Cognito. The architecture is detailed below:
+FitAI Challenge is an intelligent sports training platform that applies an AWS Serverless architecture combined with an AI/ML pipeline.
+The system’s goal is to record workout data, analyze performance, and generate AI-powered feedback to provide personalized coaching for users.
+Data from the web application is sent to Amazon API Gateway, processed by AWS Lambda (Java), and stored in Amazon S3 along with the Docker Database.
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
-
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture.png)
 
 ### AWS Services Used
-- **AWS IoT Core**: Ingests MQTT data from 5 stations, scalable to 15.
-- **AWS Lambda**: Processes data and triggers Glue jobs (two functions).
-- **Amazon API Gateway**: Facilitates web app communication.
-- **Amazon S3**: Stores raw data in a data lake and processed outputs (two buckets).
-- **AWS Glue**: Crawlers catalog data, and ETL jobs transform and load it.
-- **AWS Amplify**: Hosts the Next.js web interface.
-- **Amazon Cognito**: Secures access for lab users.
+| **Service**                                   | Role                                                                                  |
+| --------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Amazon Route 53**                           | Manages domain names and routes traffic to CloudFront.                                |
+| **AWS WAF**                                   | Protects frontend and API layers from DDoS and OWASP attacks.                         |
+| **Amazon CloudFront**                         | Delivers static content (web app built from Java web, HTML, CSS, JS).                 |
+| **Amazon API Gateway**                        | Receives requests from the frontend and forwards them to Lambda functions.            |
+| **AWS Lambda (Java)**                         | Handles business logic (registration, login, data upload, scoring, AI pipeline).      |
+| **AWS Step Functions & SQS**                  | Coordinates workflows between Lambda and SageMaker/Bedrock.                           |
+| **Amazon Cognito**                            | Authenticates users, manages login sessions, and controls access permissions.         |
+| **Amazon S3**                                 | Stores raw data, videos, images, and analysis results.                                |
+| **Docker**                                    | Runs the Java Spring Boot API backend and hosts the database (PostgreSQL or MongoDB). |
+| **Amazon SageMaker**                          | Runs inference for computer vision/pose estimation models.                            |
+| **Amazon Bedrock**                            | Generates natural language feedback, training suggestions, and summary reports.       |
+| **Amazon SES**                                | Sends authentication emails and user result notifications.                            |
+| **Amazon CloudWatch**                         | Monitors logs, Lambda performance, costs, and system efficiency.                      |
+| **IAM**                                       | Manages access permissions and security across services.                              |
+| **AWS CodePipeline / CodeBuild / CodeDeploy** | CI/CD pipeline for automating Java backend and Lambda deployment.                     |
 
 ### Component Design
-- **Edge Devices**: Raspberry Pi collects and filters sensor data, sending it to IoT Core.
-- **Data Ingestion**: AWS IoT Core receives MQTT messages from the edge devices.
-- **Data Storage**: Raw data is stored in an S3 data lake; processed data is stored in another S3 bucket.
-- **Data Processing**: AWS Glue Crawlers catalog the data, and ETL jobs transform it for analysis.
-- **Web Interface**: AWS Amplify hosts a Next.js app for real-time dashboards and analytics.
-- **User Management**: Amazon Cognito manages user access, allowing up to 5 active accounts.
+Frontend Layer:
+The web app displays the user interface and connects to the API Gateway.
+The content is built and deployed on S3 + CloudFront.
+Users access the system through Route 53 → WAF → CloudFront → API Gateway.
+Application Layer:
+The API Gateway receives requests from the frontend.
+Lambda (Java) executes business functions:
+AuthLambda: handles user login and authentication.
+UploadLambda: receives workout data, images, or videos.
+AIPipelineLambda: triggers the AI workflow (SageMaker + Bedrock).
+SaveResultLambda: stores training results and AI feedback.
 
 ### 4. Technical Implementation
 **Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
-
-**Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+| Phase                             | Description                                                             | Achieved Outcome                          |
+| --------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------- |
+| 1. AWS Infrastructure Setup       | Deploy Route 53, WAF, S3, Lambda, API Gateway, Cognito, Docker DB.      | Basic infrastructure ready.               |
+| 2. CI/CD Pipeline                 | Set up CodeCommit + CodeBuild + CodeDeploy for Java backend and Lambda. | Automated backend deployment.             |
+| 3. Build Lambda Functions (Java)  | Create Lambdas for Upload, Auth, AI Pipeline, and Save Result.          | Completed serverless backend.             |
+| 4. AI Pipeline                    | Integrate SageMaker (pose estimation model) and Bedrock (LLM feedback). | AI runs smoothly with automated feedback. |
+| 5. Web App Deployment             | Build web → Deploy to S3 + CloudFront.                                  | User interface runs online.               |
+| 6. Monitoring & Cost Optimization | Use CloudWatch + Cost Explorer for activity tracking.                   | Stable system with low cost.              |
 
 ### 5. Timeline & Milestones
-**Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
+- *Before internship (Month 0)*: Design detailed architecture and experiment with basic AI models.
+- *Internship (Month 1–3)*:
+  - Month 1: Set up infrastructure, configure Docker DB, Cognito, API Gateway, and Lambda.
+  - Month 2: Develop and complete the Java backend, build the AI pipeline with SageMaker & Bedrock.
+  - Month 3: Testing & Demo — perform performance testing, run pilot with 10–20 users, and prepare the final demo.
+- *Post-deployment*: Continue research and development for one year.
 
 ### 6. Budget Estimation
 You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
@@ -77,38 +109,47 @@ Or you can download the [Budget Estimation File](../attachments/budget_estimatio
 
 ### Infrastructure Costs
 - AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+  - Amazon API Gateway: 0.38 USD / month (300 requests/month, 1 KB/request)
+  - Amazon Bedrock: 0.32 USD / month (1 req/min, 350 input tokens, 70 output tokens)
+  - Amazon CloudFront: 1.20 USD / month (5 GB transfer, 500,000 HTTPS requests)
+  - Amazon CloudWatch: 1.85 USD / month (5 metrics, 0.5 GB logs)
+  - Amazon Cognito: 0.00 USD / month (100 MAU, Advanced Security enabled)
+  - Amazon Route 53: 0.51 USD / month (1 hosted zone)
+  - Amazon SageMaker: 0.02 USD / month (1 request/month, 0.2 GB in/out, 500 ms/request)
+  - Amazon S3: 0.04 USD / month (1 GB storage, 1,000 PUT/POST/LIST, 20,000 GET)
+  - Amazon SES: 0.30 USD / month (3,000 emails from EC2)
+  - Amazon Simple Queue Service (SQS): 0.00 USD / month (0.005 million requests/month)
+  - AWS Lambda: 0.00 USD / month (300,000 requests/month, 512 MB ephemeral storage)
+  - AWS Step Functions: 0.00 USD / month (500 workflows, 5 state transitions/workflow)
+  - AWS Web Application Firewall (WAF): 6.12 USD / month (1 Web ACL, 1 rule)
 
-Total: $0.7/month, $8.40/12 months
-
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+*Total*: 10.74 USD / month; 128.88 USD / 12 months
 
 ### 7. Risk Assessment
 #### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
+- Technical: AI misidentifies incorrect movements or encounters errors in processing image/video data.
+- User: Users fail to maintain workout habits, leading to low retention.
+- Market & Partners: Difficulty in expanding the partner network for rewards and brand collaborations.
 
 #### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+- Continuously optimize the AI model through regular and ongoing training. Additionally, user consent can be obtained to use their workout videos to improve model performance.
+- Implement deeper gamification features (streak chains, friend groups, attractive rewards).
+- Research partners thoroughly and clearly present collaboration value to establish long-term partnerships.
 
 #### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
+- When the AI encounters errors → add a fallback system to switch between different model versions.
+- When user engagement declines → launch seasonal community challenges and add vouchers during special occasions (Holidays, New Year, Summer, etc.).
+- When a commercial partner withdraws → maintain an internal FitPoints reward system with small gifts while seeking replacement partners.
+
 
 ### 8. Expected Outcomes
 #### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
+- Complete the AI motion recognition system with an accuracy rate above 90%.
+- Ensure the application runs stably and supports 10,000 concurrent active users.
+- Optimize the serverless architecture to keep infrastructure costs under 1 USD/month during the MVP phase.
+
 #### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+- Build a community of Vietnamese users who are passionate about sports and sustainable health.
+
+- Become the pioneering “AI + Fitness + Gamification” platform in Vietnam.
+

@@ -5,10 +5,8 @@ chapter: false
 pre: " <b> 2. </b> "
 ---
 
-Tại phần này, bạn cần tóm tắt các nội dung trong workshop mà bạn **dự tính** sẽ làm.
-
 # FitAI Challenge  
-## Ứng dụng hỗ trợ người dùng giảm cân dựa trên các thử thách về bài tập thể dục, tích hợp AI để theo dõi, đánh giá.
+## Ứng dụng hỗ trợ người dùng giảm cân dựa trên các thử thách về bài tập thể dục, tích hợp AI để theo dõi, đánh giá
 
 ### 1. Tóm tắt điều hành 
 FitAI Challenge là website được phát triển dành cho người Việt Nam, nhằm thúc đẩy phong trào tập luyện thể dục thể hình thông qua các thử thách thể thao có yếu tố gamification và trí tuệ nhân tạo (AI). Website sử dụng AI Camera để nhận diện và đếm động tác tập luyện như push-up, squat, plank, jumping jack,... đồng thời phân tích tư thế nhằm đưa ra đánh giá chính xác.
@@ -120,9 +118,23 @@ SaveResultLambda: lưu kết quả huấn luyện và phản hồi AI.
 Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01)  
 Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.pdf).  
 
-*Chi phí hạ tầng*   
+*Chi phí hạ tầng*
+- Dịch vụ AWS:   
+    - Amazon API Gateway: 0,38 USD / tháng (300 requests/tháng, 1 KB/request)
+    - Amazon Bedrock: 0,32 USD / tháng (1 req/min, 350 input tokens, 70 output tokens)
+    - Amazon CloudFront: 1,20 USD / tháng (5 GB transfer, 500 000 HTTPS requests)
+    - Amazon CloudWatch: 1,85 USD / tháng (5 metrics, 0,5 GB logs)
+    - Amazon Cognito: 0,00 USD / tháng (100 MAU, Advanced Security enabled)
+    - Amazon Route 53: 0,51 USD / tháng (1 hosted zone)
+    - Amazon SageMaker: 0,02 USD / tháng (1 request/tháng, 0.2 GB in/out, 500 ms/request)
+    - Amazon S3: 0,04 USD / tháng (1 GB storage, 1000 PUT/POST/LIST, 20 000 GET)
+    - Amazon SES: 0,30 USD / tháng (3000 emails from EC2)
+    - Amazon Simple Queue Service (SQS): 0,00 USD / tháng (0,005 triệu requests/tháng)
+    - AWS Lambda: 0,00 USD / tháng (300 000 requests/tháng, 512 MB ephemeral storage)
+    - AWS Step Functions: 0,00 USD / tháng (500 workflows, 5 state transitions/workflow)
+    - AWS Web Application Firewall (WAF): 6,12 USD / tháng (1 Web ACL, 1 rule)
 
-*Tổng*: 
+*Tổng*: 10,74 USD / tháng; 128,88 USD / 12 tháng
 
 ### 7. Đánh giá rủi ro  
 *Ma trận rủi ro*  
@@ -148,4 +160,6 @@ Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.p
 
 *Giá trị dài hạn*: 
 - Xây dựng cộng đồng người Việt yêu thích thể thao và sức khỏe bền vững.
+
 - Trở thành nền tảng tiên phong “AI + Fitness + Gamification” tại Việt Nam.
+
