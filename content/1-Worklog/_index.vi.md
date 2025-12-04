@@ -1,5 +1,5 @@
 ---
-title: "Worklog - Hành Trình Học AWS"
+title: "Worklog"
 weight: 1
 chapter: true
 pre: "<b> 1. </b>"
