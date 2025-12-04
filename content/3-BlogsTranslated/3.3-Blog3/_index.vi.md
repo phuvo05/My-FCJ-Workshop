@@ -5,9 +5,7 @@ chapter: false
 pre: " <b> 3.3. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
 
 # Điều hướng các gói bảo vệ Amazon GuardDuty và Phát hiện mối đe dọa mở rộng
 
@@ -120,7 +118,7 @@ Các gói bảo vệ GuardDuty, cùng với tính năng Phát hiện mối đe d
 
 
 ### **Nisha Amthul**
-<img src = "media/image1.jpg">
+![Nisha Amthul](/images/3-BlogsTranslated/3.3-Blog3/image1.jpg)
 Nisha là Giám đốc Tiếp thị Sản phẩm Cấp cao tại AWS Security, chuyên về các giải pháp phát hiện và phản ứng sự cố. Cô có nền tảng vững chắc trong quản lý sản phẩm và tiếp thị sản phẩm trong các lĩnh vực an ninh thông tin và bảo vệ dữ liệu. Khi không làm việc, Nisha thích trang trí bánh, tập luyện sức mạnh, và chăm sóc hai đứa con năng động của mình.
 
 ### 
@@ -128,11 +126,11 @@ Nisha là Giám đốc Tiếp thị Sản phẩm Cấp cao tại AWS Security, c
 ### 
 
 ### **Sujay Doshi**
-<img src = "media/image3.png">
+![Sujay Doshi](/images/3-BlogsTranslated/3.3-Blog3/image2.jpeg)
 Sujay là Giám đốc Sản phẩm Cấp cao tại AWS, tập trung vào các dịch vụ bảo mật. Với hơn 10 năm kinh nghiệm trong lĩnh vực quản lý sản phẩm và phát triển phần mềm, anh dẫn dắt chiến lược sản phẩm cho Amazon GuardDuty. Trước khi gia nhập AWS, Sujay từng đảm nhiệm các vị trí lãnh đạo tại nhiều công ty công nghệ khác nhau. Anh đam mê bảo mật đám mây và tự mô tả mình là “một người yêu dữ liệu với sở thích tìm kim trong đống cỏ mạng.”
 
 
 
 ### **Shachar Hirshberg**
-<img src = "media/image2.jpeg">
+![Shachar Hirshberg](/images/3-BlogsTranslated/3.3-Blog3/image3.png)
 Shachar từng là Giám đốc Sản phẩm Cấp cao cho Amazon GuardDuty với hơn một thập kỷ kinh nghiệm trong việc xây dựng, thiết kế, ra mắt và mở rộng phần mềm doanh nghiệp. Anh đam mê việc giúp khách hàng khai thác tối đa các dịch vụ AWS để thúc đẩy đổi mới và nâng cao bảo mật cho môi trường đám mây của họ. Ngoài công việc, Shachar là người đam mê du lịch và trượt tuyết.

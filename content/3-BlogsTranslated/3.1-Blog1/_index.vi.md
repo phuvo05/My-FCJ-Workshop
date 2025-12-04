@@ -54,7 +54,7 @@ Khi ước tính chi phí triển khai để di chuyển sang triển khai ECS m
 
 Khi tạo dịch vụ Amazon ECS bằng CodeDeploy, trước tiên bạn tạo cân bằng tải với trình nghe sản xuất và (tùy chọn) trình nghe thử nghiệm. Mỗi trình nghe được cấu hình với một quy tắc (mặc định) duy nhất định tuyến tất cả lưu lượng truy cập đến một nhóm mục tiêu duy nhất (nhóm mục tiêu chính) như trong Hình 1 (a). Sau đó, bạn tạo một dịch vụ Amazon ECS được định cấu hình để sử dụng trình nghe và nhóm đích, với  loại deploymentController được đặt thành CODE\_DEPLOY. Việc tạo dịch vụ dẫn đến việc tạo ra một TaskSet (màu xanh lam) được đăng ký với nhóm mục tiêu được chỉ định.
 
-<img src = "media/image1.png">
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image1.png" style="width:6.26772in;height:2.66667in" alt="Figure 1: Application Load Balancer initial configuration" />
 
 *Hình 1: Cấu hình ban đầu của cân bằng tải*
 
@@ -68,13 +68,13 @@ Mặc dù cả hai cách tiếp cận đều dẫn đến việc tạo ra một 
 
 Hình 2 cho thấy cách triển khai một bản sửa đổi dịch vụ mới. CodeDeploy triển khai phiên bản mới của dịch vụ bằng cách sử dụng CreateDeployment(), chỉ định tên ứng dụng CodeDeploy, tên nhóm triển khai và chi tiết sửa đổi trong tệp AppSpec. Điều này phải chứa định nghĩa tác vụ cho phiên bản mới, tên vùng chứa và cổng để sử dụng. Triển khai ECS màu xanh lam/xanh lá cây tạo triển khai dịch vụ mới bằng cách gọi UpdateService(), chuyển thông tin chi tiết về định nghĩa tác vụ thay thế.
 
-![Hình 2: Triển khai bản sửa đổi dịch vụ][image2]
+![Hình 2: Triển khai bản sửa đổi dịch vụ](/images/3-BlogsTranslated/3.1-Blog1/image2.png)
 
 *Hình 2: Triển khai bản sửa đổi dịch vụ*
 
 Theo tùy chọn, tệp CodeDeploy AppSpec cũng có thể được sử dụng để chỉ định các thay đổi cấu hình dịch vụ khác, chẳng hạn như cấu hình mạng và chiến lược nhà cung cấp dung lượng, đồng thời để chỉ định các móc vòng đời (xem phần sau). Khi sử dụng Amazon ECS, bạn chỉ định những thay đổi này bằng cách sử dụng UpdateService().
 
-![Hình 3: Định tuyến lại lưu lượng truy cập][image3]
+![Hình 3: Định tuyến lại lưu lượng truy cập](/images/3-BlogsTranslated/3.1-Blog1/image3.png)
 
 *Hình 3: Định tuyến lại lưu lượng truy cập*
 
@@ -157,7 +157,7 @@ Cách tiếp cận này sử dụng chiến lược xanh lam / xanh lá cây cho
 
 Hình 4 mô tả cách tiếp cận này.
 
-![Hình 4: Phương án 2 – Dịch vụ mới và cân bằng tải hiện có][image4]
+![Hình 4: Phương án 2 – Dịch vụi mới và cân bằng tải hiện có](/images/3-BlogsTranslated/3.1-Blog1/image4.png)
 
 *Hình 4: Phương án 2 – Dịch vụ mới và cân bằng tải hiện có*
 
@@ -167,7 +167,7 @@ Giống như cách tiếp cận trước, cách tiếp cận này sử dụng ch
 
 Cách tiếp cận này phù hợp với người dùng đã có lớp định tuyến này và nếu tất cả giao tiếp với dịch vụ Amazon ECS đang diễn ra thông qua nó (nói cách khác là không có giao tiếp trực tiếp ở cấp cân bằng tải). Khi so sánh với Tùy chọn 2, tùy chọn này có lợi ích là không có thời gian chết nhưng đắt hơn một chút.
 
-![Hình 5: Tùy chọn 3 – Dịch vụ mới và cân bằng tải mới][image5]
+![Hình 5: Tùy chọn 3 – Dịch vụ mới và cân bằng tải mới](/images/3-BlogsTranslated/3.1-Blog1/image5.png)
 
 *Hình 5: Tùy chọn 3 – Dịch vụ mới và cân bằng tải mới*
 
@@ -196,12 +196,26 @@ Trong bài đăng này, chúng tôi đã thảo luận về việc di chuyển t
 
 Nếu bạn hiện đang sử dụng CodeDeploy và đang cân nhắc chuyển sang triển khai ECS xanh/xanh lá cây, thì bạn có thể sử dụng bài đăng này làm hướng dẫn để đánh giá tính khả thi và lập kế hoạch di chuyển của mình. Để biết thêm thông tin về triển khai ECS xanh/xanh, hãy xem hướng [dẫn dành cho nhà phát triển Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-blue-green.html).
 
-**Về các tác giả**
+# **About the authors**
 
-### **Mike Rizzo** là Kiến trúc sư Giải pháp Cấp cao trong nhóm Dịch vụ Tài chính của AWS tại Vương quốc Anh. Anh có niềm đam mê với việc hiện đại hóa ứng dụng, đặc biệt là việc sử dụng container, serverless và trí tuệ nhân tạo để triển khai trong môi trường điện toán đám mây. Trong thời gian rảnh, bạn sẽ thấy anh chạy bộ và đạp xe quanh vùng nông thôn Suffolk, nấu các món ăn Malta, và chơi Fortnite\!
+### 
 
-**Islam Mahgoub** là Kiến trúc sư Giải pháp Cấp cao tại AWS với hơn 15 năm kinh nghiệm trong lĩnh vực ứng dụng, tích hợp và kiến trúc công nghệ. Tại AWS, anh giúp khách hàng xây dựng các giải pháp hướng đám mây mới và hiện đại hóa các ứng dụng cũ bằng cách sử dụng các dịch vụ của AWS. Ngoài công việc, Islam thích đi dạo, xem phim và nghe nhạc.
+### 
 
-**Olly Pomeroy** is a Senior Container Specialist Solution Architect at AWS.  
+### 
 
+### 
 
+### Mike Rizzo
+![Mike Rizzo](/images/3-BlogsTranslated/3.1-Blog1/author1.png)
+
+**Mike Rizzo** là Kiến trúc sư Giải pháp Chính (Principal Solutions Architect) trong nhóm Dịch vụ Tài chính tại AWS Vương quốc Anh. Anh đặc biệt quan tâm đến việc hiện đại hóa ứng dụng, đặc biệt là sử dụng container, serverless và trí tuệ nhân tạo để hỗ trợ triển khai trên nền tảng đám mây. Trong thời gian rảnh, bạn sẽ thấy anh chạy bộ và đạp xe quanh vùng nông thôn Suffolk, nấu món ăn Malta, và chơi Fortnite!
+
+### Islam Mahgoub
+![Islam Mahgoub](/images/3-BlogsTranslated/3.1-Blog1/author2.jpeg)
+
+**Islam Mahgoub** là Kiến trúc sư Giải pháp Cấp cao (Senior Solutions Architect) tại AWS với hơn 15 năm kinh nghiệm trong lĩnh vực kiến trúc ứng dụng, tích hợp và công nghệ. Tại AWS, anh giúp khách hàng xây dựng các giải pháp tập trung vào đám mây mới và hiện đại hóa các ứng dụng kế thừa bằng cách sử dụng các dịch vụ AWS. Ngoài công việc, Islam thích đi bộ, xem phim và nghe nhạc.
+### Olly Pomeroy
+![Olly Pomeroy](/images/3-BlogsTranslated/3.1-Blog1/author3.jpeg)
+
+**Olly Pomeroy** là Kiến trúc sư Giải pháp Chuyên gia về Container Cấp cao (Senior Container Specialist Solution Architect) tại AWS.

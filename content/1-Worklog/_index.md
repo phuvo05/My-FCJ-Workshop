@@ -1,38 +1,54 @@
 ---
-title: "Worklog"
+title: "Worklog - AWS Learning Journey"
 weight: 1
-chapter: false
-pre: " <b> 1. </b> "
+chapter: true
+pre: "<b> 1. </b>"
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
+# Worklog
 
-**On this page**, you will need to introduce your worklog. **How** did you complete it? How many weeks did you take to complete the program? **What** did you do in those weeks?
+## Overview
 
-Typically, and as a standard, a worklog is carried out over about 3 months (throughout the internship period) with weekly contents as follows:
+This worklog documents the AWS learning journey starting from **September 8, 2025**.
 
-**Week 1:** [Getting familiar with AWS and basic AWS services](1.1-week1/)
+### Structure
 
-**Week 2:** [Doing task A...](1.2-week2/)
+The worklog is organized by **weeks**, with each week consisting of **five working days** (Monday to Friday).
 
-**Week 3:** [Doing task B...](1.3-week3/)
+### Main Topics
 
-**Week 4:** [Doing task C...](1.4-week4/)
+1. **Cloud Computing Fundamentals**
+   - AWS basics, global infrastructure, and management tools  
+   - Cost optimization strategies and support plans  
+   - The AWS Well-Architected Framework  
 
-**Week 5:** [Doing task D...](1.5-week5/)
+2. **Networking**
+   - VPC, subnets, security groups, and NACLs  
+   - Load balancing (ALB, NLB, GWLB)  
+   - VPC Peering and Transit Gateway  
+   - VPN and Direct Connect  
 
-**Week 6:** [Doing task E...](1.6-week6/)
+3. **Compute**
+   - EC2, AMI, EBS, Instance Store  
+   - Auto Scaling and pricing models  
+   - Lightsail, EFS, FSx  
 
-**Week 7:** [Doing task G...](1.7-week7/)
+4. **Storage**
+   - S3, storage classes, Glacier  
+   - Snow Family and Storage Gateway  
+   - Disaster Recovery and AWS Backup  
 
-**Week 8:** [Doing task H...](1.8-week8/)
+5. **Security & Identity**
+   - IAM, Cognito, and AWS Organizations  
+   - KMS and Security Hub  
+   - Identity Center (SSO)  
 
-**Week 9:** [Doing task I...](1.9-week9/)
+6. **Database**
+   - RDS, Aurora, Redshift  
+   - ElastiCache and DMS  
+   - Database best practices  
 
-**Week 10:** [Doing task L...](1.10-week10/)
-
-**Week 11:** [Doing task M...](1.11-week11/)
-
-**Week 12:** [Doing task N...](1.12-week12/)
+7. **Advanced Topics**
+   - Serverless (Lambda)  
+   - Containers (ECS, EKS, ECR)  
+   - Monitoring (CloudWatch, X-Ray, CloudTrail)

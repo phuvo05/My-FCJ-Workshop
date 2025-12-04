@@ -5,10 +5,6 @@ chapter: false
 pre: " <b> 3.2. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
 # Phá vỡ các silo dữ liệu và truy vấn liền mạch các bảng Iceberg trong Amazon SageMaker từ Snowflake
 
 bởi Nidhi Gupta và Andries Engelbrecht vào ngày 15 tháng 9 năm 2025 trong Nâng [cao (300),](https://aws.amazon.com/blogs/big-data/category/learning-levels/advanced-300/) [Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/category/analytics/amazon-sagemaker-lakehouse/), [Amazon Simple Storage Service (S3),](https://aws.amazon.com/blogs/big-data/category/storage/amazon-simple-storage-services-s3/) [AWS Glue](https://aws.amazon.com/blogs/big-data/category/analytics/aws-glue/), [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/category/analytics/aws-lake-formation/), [Giải pháp đối tác](https://aws.amazon.com/blogs/big-data/category/post-types/partner-solutions/), [S3 Select](https://aws.amazon.com/blogs/big-data/category/storage/s3-select/), [ Hướng dẫn kỹ thuật](https://aws.amazon.com/blogs/big-data/category/post-types/technical-how-to/) [Permalink](https://aws.amazon.com/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/)  [Chia  sẻ](https://aws.amazon.com/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/#Comments)  [nhận xét](https://aws.amazon.com/vi/blogs/big-data/break-down-data-silos-and-seamlessly-query-iceberg-tables-in-amazon-sagemaker-from-snowflake/)
@@ -47,7 +43,7 @@ Bằng cách sử dụng kiến trúc lakehouse của SageMaker với sức mạ
 
 Sơ đồ sau đây cho thấy kiến trúc để tích hợp danh mục giữa bảng Snowflake và Iceberg trong nhà hồ.
 
-<img src = "media/image1.png">
+![Catalog integration to query Iceberg tables in S3 bucket using Iceberg REST Catalog (IRC) with credential vending](/images/3-BlogsTranslated/3.2-Blog2/image1.png)
 
 Quy trình làm việc bao gồm các thành phần sau:
 
@@ -112,12 +108,12 @@ Giải pháp mất khoảng 30–45 phút để thiết lập. Chi phí thay đ�
 2\. 	Chọn Tạo chính sách.
 
 3\. 	Chọn trình chỉnh sửa JSON và nhập chính sách sau (cung cấp Khu vực AWS và ID tài khoản của bạn), sau đó chọn Tiếp theo.
-
+```yml
 {
 
      "Version": "2012-10-17",
 
-     "Statement": \[
+     "Statement": [
 
          {
 
@@ -125,7 +121,7 @@ Giải pháp mất khoảng 30–45 phút để thiết lập. Chi phí thay đ�
 
          	"Effect": "Allow",
 
-         	"Action": \[
+         	"Action": [
 
              	"glue:GetCatalog",
 
@@ -145,17 +141,17 @@ Giải pháp mất khoảng 30–45 phút để thiết lập. Chi phí thay đ�
 
              	"glue:UpdateTable"
 
-         	\],
+         	],
 
-         	"Resource": \[
+         	"Resource": [
 
-                 "arn:aws:glue:\<region\>:\<account-id\>:catalog",
+                 "arn:aws:glue:<region\>:<account-id\>:catalog",
 
-                 "arn:aws:glue:\<region\>:\<account-id\>:database/iceberg\_db",
+                 "arn:aws:glue:<region\>:<account-id\>:database/iceberg_db",
 
-                 "arn:aws:glue:\<region\>:\<account-id\>:table/iceberg\_db/\*",
+                 "arn:aws:glue:<region\>:<account-id\>:table/iceberg_db/\*",
 
-         	\]
+         	]
 
          },
 
@@ -163,15 +159,16 @@ Giải pháp mất khoảng 30–45 phút để thiết lập. Chi phí thay đ�
 
          	"Effect": "Allow",
 
-         	"Action": \[
+         	"Action": [
 
                  "lakeformation:GetDataAccess"
 
-         	\],
+         	],
 
-         	"Resource": "\*"
+         	"Resource": "*"
 
          }
+```
 
 4\. 	Nhập iceberg-table-access làm tên chính sách.
 
@@ -258,113 +255,77 @@ Hoàn thành các bước sau để thiết lập tích hợp Iceberg REST trong
 1\. 	Đăng nhập vào Snowflake với tư cách là người dùng quản trị.
 
 2\. 	Thực hiện lệnh SQL sau (cung cấp Khu vực, ID tài khoản và ID bên ngoài mà bạn đã cung cấp trong quá trình tạo vai trò IAM):
+```yml
+CREATE OR REPLACE CATALOG INTEGRATION glue_irc_catalog_int  
+CATALOG_SOURCE = ICEBERG_REST  
+TABLE_FORMAT = ICEBERG  
+CATALOG_NAMESPACE = 'iceberg_db'  
+REST_CONFIG = (  
+    CATALOG_URI = 'https://glue.<region>.amazonaws.com/iceberg'  
+    CATALOG_API_TYPE = AWS_GLUE  
+    CATALOG_NAME = '<account-id>'  
+    ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS  
+)  
+REST_AUTHENTICATION = (  
+    TYPE = SIGV4  
+    SIGV4_IAM_ROLE = 'arn:aws:iam::<account-id>:role/snowflake_access_role'  
+    SIGV4_SIGNING_REGION = '<region>'  
+    SIGV4_EXTERNAL_ID = '<external-id>'  
+)  
+REFRESH_INTERVAL_SECONDS = 120
 
-CREATE OR REPLACE CATALOG INTEGRATION glue\_irc\_catalog\_int
-
-CATALOG\_SOURCE \= ICEBERG\_REST
-
-TABLE\_FORMAT \= ICEBERG
-
-CATALOG\_NAMESPACE \= 'iceberg\_db'
-
-REST\_CONFIG \= (
-
-    CATALOG\_URI \= 'https://glue.\<region\>.amazonaws.com/iceberg'
-
-    CATALOG\_API\_TYPE \= AWS\_GLUE
-
-    CATALOG\_NAME \= '\<account-id\>'
-
-    ACCESS\_DELEGATION\_MODE \= VENDED\_CREDENTIALS
-
-)
-
-REST\_AUTHENTICATION \= (
-
-	TYPE \= SIGV4
-
-    SIGV4\_IAM\_ROLE \= 'arn:aws:iam::\<account-id\>:role/snowflake\_access\_role'
-
-    SIGV4\_SIGNING\_REGION \= '\<region\>'
-
-    SIGV4\_EXTERNAL\_ID \= '\<external-id\>'
-
-)
-
-REFRESH\_INTERVAL\_SECONDS \= 120
-
-ENABLED \= TRUE;
+ENABLED = TRUE;
+```
 
 3\. 	Thực hiện lệnh SQL sau và truy xuất giá trị cho API\_AWS\_IAM\_USER\_ARN:
-
-MÔ TẢ glue\_irc\_catalog\_int TÍCH HỢP DANH MỤC;
-
+```yml
+DESCRIBE CATALOG INTEGRATION glue_irc_catalog_int;
+```
 4\. 	Trên bảng điều khiển IAM, hãy cập nhật mối quan hệ tin cậy cho snowflake\_access\_role với giá trị cho API\_AWS\_IAM\_USER\_ARN:
-
-{
-
-    "Version": "2012-10-17",
-
-    "Statement": \[
-
-        {
-
-            "Sid": "",
-
-	        "Effect": "Allow",
-
-            "Principal": {
-
-            	"AWS": \[
-
-                   "\<API\_AWS\_IAM\_USER\_ARN\>"
-
-            	\]
-
-            },
-
-            "Action": "sts:AssumeRole",
-
-            "Condition": {
-
-            	"StringEquals": {
-
-                	"sts:ExternalId": \[
-
-                        "\<external-id\>"
-
-                	\]
-
-            	}
-
-            }
-
-        }
-
-    \]
+```yml
+{  
+    "Version": "2012-10-17",  
+    "Statement": [  
+        {  
+            "Sid": "",  
+            "Effect": "Allow",  
+            "Principal": {  
+                "AWS": [  
+                   "<API_AWS_IAM_USER_ARN>"  
+                ]  
+            },  
+            "Action": "sts:AssumeRole",  
+            "Condition": {  
+                "StringEquals": {  
+                    "sts:ExternalId": [  
+                        "<external-id>"  
+                    ]  
+                }  
+            }  
+        }  
+    ]
 
 }
-
+```
 5\. 	Xác minh việc tích hợp danh mục:
-
-SELECT SYSTEM$VERIFY\_CATALOG\_INTEGRATION('glue\_irc\_catalog\_int');
-
+```yml
+SELECT SYSTEM$VERIFY_CATALOG_INTEGRATION('glue_irc_catalog_int');
+```
 6\. 	Gắn bảng S3 làm bàn Bông tuyết:
+```yml
+CREATE OR REPLACE ICEBERG TABLE s3iceberg_customer  
+ CATALOG = 'glue_irc_catalog_int'  
+ CATALOG_NAMESPACE = 'iceberg_db'  
+ CATALOG_TABLE_NAME = 'customer'
 
-CREATE OR REPLACE ICEBERG TABLE s3iceberg\_customer
-
-CATALOG \= 'glue\_irc\_catalog\_int'
-
-CATALOG\_NAMESPACE \= 'iceberg\_db'
-
-CATALOG\_TABLE\_NAME \= 'customer'
-
-AUTO\_REFRESH \= TRUE;
-
+ AUTO_REFRESH = TRUE;
+```
 **Truy vấn bảng Iceberg từ Snowflake**
 
-Để kiểm tra cấu hình, hãy đăng nhập vào Snowflake với tư cách là người dùng quản trị và chạy truy vấn mẫu sau: CHỌN \* TỪ s3iceberg\_customer GIỚI HẠN 10;
-
+Để kiểm tra cấu hình, hãy đăng nhập vào Snowflake với tư cách là người dùng quản trị và chạy truy vấn mẫu sau: 
+```yml
+SELECT * FROM s3iceberg_customer LIMIT 10;
+```
 **Quét dọn**
 
 Để dọn dẹp tài nguyên của bạn, hãy hoàn thành các bước sau:
@@ -372,11 +333,11 @@ AUTO\_REFRESH \= TRUE;
 1\. 	Xóa cơ sở dữ liệu và bảng trong AWS Glue.
 
 2\. 	Thả bảng Iceberg, tích hợp danh mục và cơ sở dữ liệu trong Snowflake:
+```yml
+DROP ICEBERG TABLE iceberg_customer;
 
-DROP ICEBERG TABLE iceberg\_customer;
-
-DROP CATALOG INTEGRATION glue\_irc\_catalog\_int;
-
+DROP CATALOG INTEGRATION glue_irc_catalog_int;
+```
 Đảm bảo rằng tất cả các tài nguyên được dọn dẹp đúng cách để tránh các khoản phí không mong muốn.
 
 **Kết thúc**
@@ -403,7 +364,7 @@ o   [Đơn giản hóa quyền truy cập dữ liệu cho doanh nghiệp của b
 
 Những tài nguyên này có thể giúp bạn triển khai và tối ưu hóa mẫu tích hợp này cho trường hợp sử dụng cụ thể của bạn. Khi bạn bắt đầu hành trình này, hãy nhớ bắt đầu từ quy mô nhỏ, xác thực kiến trúc của bạn với dữ liệu thử nghiệm và dần dần mở rộng quy mô triển khai dựa trên nhu cầu của tổ chức bạn.
 
-**Về các tác giả**
+# **Về các tác giả**
 
 ### 
 
@@ -414,12 +375,12 @@ Những tài nguyên này có thể giúp bạn triển khai và tối ưu hóa 
 ### 
 
 ### Nidhi Gupta
-<img src = "media/image2.jpg">
+![Nidhi Gupta](/images/3-BlogsTranslated/3.2-Blog2/image2.jpg)
 
 [Nidhi](https://www.linkedin.com/in/nidhi-gupta-5b80874/) là Kiến trúc sư Giải pháp Đối tác Cấp cao tại AWS, chuyên về dữ liệu và phân tích. Cô hỗ trợ khách hàng và đối tác xây dựng và tối ưu hóa các khối công việc Snowflake trên AWS. Nidhi có nhiều kinh nghiệm trong việc dẫn dắt các lần phát hành và triển khai sản phẩm, với trọng tâm về Dữ liệu, Trí tuệ nhân tạo (AI), Học máy (ML), Trí tuệ nhân tạo tạo sinh (Generative AI), và Phân tích nâng cao (Advanced Analytics).
 
 ### Andries Engelbrecht
-<img src = "media/image3.jpg">
+![Andries Engelbrecht](/images/3-BlogsTranslated/3.2-Blog2/image3.jpg)
 
 [Andries](https://www.linkedin.com/in/andries-engelbrecht-427b8b1/) là Kỹ sư Giải pháp Đối tác Cấp cao tại Snowflake, làm việc cùng AWS. Anh hỗ trợ việc tích hợp sản phẩm và dịch vụ, cũng như phát triển các giải pháp chung với AWS. Andries có hơn 25 năm kinh nghiệm trong lĩnh vực dữ liệu và phân tích.
 

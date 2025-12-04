@@ -4,10 +4,6 @@ weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
-
 # Migrating from AWS CodeDeploy to Amazon ECS for blue/green deployments
 
 by Mike Rizzo, Islam Mahgoub, and Olly Pomeroy on 16 SEP 2025 in [Amazon Elastic Container Service](https://aws.amazon.com/blogs/containers/category/compute/amazon-elastic-container-service/), [AWS CodeDeploy](https://aws.amazon.com/blogs/containers/category/developer-tools/aws-codedeploy/), [Best Practices](https://aws.amazon.com/blogs/containers/category/post-types/best-practices/), [Developer Tools](https://aws.amazon.com/blogs/containers/category/developer-tools/), [DevOps](https://aws.amazon.com/blogs/containers/category/devops/), [Technical How-to](https://aws.amazon.com/blogs/containers/category/post-types/technical-how-to/) [Permalink](https://aws.amazon.com/blogs/containers/migrating-from-aws-codedeploy-to-amazon-ecs-for-blue-green-deployments/) [Share](https://aws.amazon.com/vi/blogs/containers/migrating-from-aws-codedeploy-to-amazon-ecs-for-blue-green-deployments/#)
@@ -55,7 +51,7 @@ When estimating implementation costs for migrating to ECS blue/green deployments
 
 When creating an Amazon ECS service using CodeDeploy, you first create a load balancer with a production listener and (optionally) a test listener. Each listener is configured with a single (default) rule that routes all traffic to a single target group (the primary target group) as shown in Figure 1(a). Then, you create an Amazon ECS service configured to use the listener and target group, with deploymentController type set to CODE_DEPLOY. Service creation results in the creation of a (blue) TaskSet registered with the specified target group.
 
-<img src="media/image1.png" style="width:6.26772in;height:2.66667in" alt="Figure 1: Application Load Balancer initial configuration" />
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image1.png" style="width:6.26772in;height:2.66667in" alt="Figure 1: Application Load Balancer initial configuration" />
 
 *Figure 1: Load balancer initial configuration*
 
@@ -69,13 +65,13 @@ Although both approaches result in the creation of an initial set of tasks, the 
 
 Figure 2 shows how a new service revision is deployed. CodeDeploy deploys a new version of a service using CreateDeployment(), specifying the CodeDeploy application name, deployment group name, and revision details in an AppSpec file. This must contain the task definition for the new revision, and the container name and port to use. ECS blue/green deployments create a new service deployment by calling UpdateService(), passing details of the replacement task definition.
 
-<img src="media/image2.png" style="width:6.26772in;height:2in" alt="Figure 2: Deploying a service revision" />
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image2.png" style="width:6.26772in;height:2in" alt="Figure 2: Deploying a service revision" />
 
 *Figure 2: Deploying a service revision*
 
 Optionally, the CodeDeploy AppSpec file can also be used to specify more service configuration changes, such as networking configuration and capacity provider strategy, and to specify lifecycle hooks (see the following section). When you use Amazon ECS, you specify these changes using UpdateService().
 
-<img src="media/image3.png" style="width:6.26772in;height:4.27778in" alt="Figure 3: Re-routing traffic" />
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image3.png" style="width:6.26772in;height:4.27778in" alt="Figure 3: Re-routing traffic" />
 
 *Figure 3: Re-routing traffic*
 
@@ -158,7 +154,7 @@ This approach uses a blue/green strategy for the migration (in other words, a bl
 
 Figure 4 depicts this approach.
 
-<img src="media/image4.png" style="width:6.26772in;height:3.51389in" alt="Figure 4: Option 2 – New service and existing load balancer" />
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image4.png" style="width:6.26772in;height:3.51389in" alt="Figure 4: Option 2 – New service and existing load balancer" />
 
 *Figure 4: Option 2 – New service and existing load balancer*
 
@@ -168,7 +164,7 @@ Like the preceding approach, this approach uses a blue/green strategy for the mi
 
 This approach is suitable for users who already have this routing layer, and if all the communication with the Amazon ECS service is happening through it (in other words there is no direct communication at the load balancer level). When compared with Option 2, this option has the benefit of zero downtime but is a bit more expensive.
 
-<img src="media/image5.png" style="width:6.26772in;height:3.51389in" alt="Figure 5: Option 3 – New service and new load balancer" />
+<img src="/images/3-BlogsTranslated/3.1-Blog1/image5.png" style="width:6.26772in;height:3.51389in" alt="Figure 5: Option 3 – New service and new load balancer" />
 
 *Figure 5: Option 3 – New service and new load balancer*
 
@@ -253,3 +249,28 @@ In this post, we discussed migrating from AWS CodeDeploy to Amazon ECS for blue/
 -   three different ways to approach migration.
 
 If you’re currently using CodeDeploy and are considering a move to ECS blue/green deployments, then you can use this post as a guide to assess feasibility and plan your migration. For more information about ECS blue/green deployments, check out the [<u>Amazon ECS developer guide</u>](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-blue-green.html).
+
+# **About the authors**
+
+### 
+
+### 
+
+### 
+
+### 
+
+### Mike Rizzo
+![Mike Rizzo](/images/3-BlogsTranslated/3.1-Blog1/author1.png)
+
+**Mike Rizzo** is a Principal Solutions Architect in the AWS UK Financial Services team. He has a keen interest in application modernization, and specifically use of containers, serverless, and artificial intelligence to enable this in the cloud. In his spare time, you’ll find him running and cycling around the Suffolk countryside, cooking Maltese food, and playing Fortnite!
+
+### Islam Mahgoub
+![Islam Mahgoub](/images/3-BlogsTranslated/3.1-Blog1/author2.jpeg)
+
+**Islam Mahgoub** is a Senior Solutions Architect at AWS with over 15 years of experience in application, integration, and technology architecture. At AWS, he helps customers build new cloud-centered solutions and modernize their legacy applications using AWS services. Outside of work, Islam enjoys walking, watching movies, and listening to music.
+
+### Olly Pomeroy
+![Olly Pomeroy](/images/3-BlogsTranslated/3.1-Blog1/author3.jpeg)
+
+**Olly Pomeroy** is a Senior Container Specialist Solution Architect at AWS.

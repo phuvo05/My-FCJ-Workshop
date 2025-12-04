@@ -4,9 +4,6 @@ weight: 1
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
 # Break down data silos and seamlessly query Iceberg tables in Amazon SageMaker from Snowflake
 
@@ -39,7 +36,7 @@ By using the lakehouse architecture of SageMaker with Snowflake’s serverless a
 
 The following diagram shows the architecture for catalog integration between Snowflake and Iceberg tables in the lakehouse.
 
-![Catalog integration to query Iceberg tables in S3 bucket using Iceberg REST Catalog (IRC) with credential vending][image1]
+![Catalog integration to query Iceberg tables in S3 bucket using Iceberg REST Catalog (IRC) with credential vending](/images/3-BlogsTranslated/3.2-Blog2/image1.png)
 
 The workflow consists of the following components:
 
@@ -85,39 +82,65 @@ To create an IAM role for Snowflake, you first create a policy for the role:
 2. Choose Create policy.  
 3. Choose the JSON editor and enter the following policy (provide your AWS Region and account ID), then choose Next.
 ```yml
-{  
-     "Version": "2012-10-17",  
-     "Statement": \[  
-         {  
-             "Sid": "AllowGlueCatalogTableAccess",  
-             "Effect": "Allow",  
-             "Action": \[  
-                 "glue:GetCatalog",  
-                 "glue:GetCatalogs",  
-                 "glue:GetPartitions",  
-                 "glue:GetPartition",  
-                 "glue:GetDatabase",  
-                 "glue:GetDatabases",  
-                 "glue:GetTable",  
-                 "glue:GetTables",  
-                 "glue:UpdateTable"  
-             \],  
-             "Resource": \[  
-                 "arn:aws:glue:\<region\>:\<account-id\>:catalog",  
-                 "arn:aws:glue:\<region\>:\<account-id\>:database/iceberg\_db",  
-                 "arn:aws:glue:\<region\>:\<account-id\>:table/iceberg\_db/\*",  
-             \]  
-         },  
-         {  
-             "Effect": "Allow",  
-             "Action": \[  
-                 "lakeformation:GetDataAccess"  
-             \],  
-             "Resource": "\*"  
-         }  
-     \]
+{
 
- }
+     "Version": "2012-10-17",
+
+     "Statement": [
+
+         {
+
+         	"Sid": "AllowGlueCatalogTableAccess",
+
+         	"Effect": "Allow",
+
+         	"Action": [
+
+             	"glue:GetCatalog",
+
+             	"glue:GetCatalogs",
+
+                 "glue:GetPartitions",
+
+             	"glue:GetPartition",
+
+             	"glue:GetDatabase",
+
+             	"glue:GetDatabases",
+
+             	"glue:GetTable",
+
+             	"glue:GetTables",
+
+             	"glue:UpdateTable"
+
+         	],
+
+         	"Resource": [
+
+                 "arn:aws:glue:<region\>:<account-id\>:catalog",
+
+                 "arn:aws:glue:<region\>:<account-id\>:database/iceberg_db",
+
+                 "arn:aws:glue:<region\>:<account-id\>:table/iceberg_db/\*",
+
+         	]
+
+         },
+
+         {
+
+         	"Effect": "Allow",
+
+         	"Action": [
+
+                 "lakeformation:GetDataAccess"
+
+         	],
+
+         	"Resource": "*"
+
+         }
 ```
 4. Enter iceberg-table-access as the policy name.  
 5. Choose Create policy.
@@ -177,49 +200,49 @@ Complete the following steps to set up the Iceberg REST integration in Snowflake
 1. Log in to Snowflake as an admin user.  
 2. Execute the following SQL command (provide your Region, account ID, and external ID that you provided during IAM role creation):
 ```yml
-CREATE OR REPLACE CATALOG INTEGRATION glue\_irc\_catalog\_int  
-CATALOG\_SOURCE \= ICEBERG\_REST  
-TABLE\_FORMAT \= ICEBERG  
-CATALOG\_NAMESPACE \= 'iceberg\_db'  
-REST\_CONFIG \= (  
-    CATALOG\_URI \= 'https://glue.\<region\>.amazonaws.com/iceberg'  
-    CATALOG\_API\_TYPE \= AWS\_GLUE  
-    CATALOG\_NAME \= '\<account-id\>'  
-    ACCESS\_DELEGATION\_MODE \= VENDED\_CREDENTIALS  
+CREATE OR REPLACE CATALOG INTEGRATION glue_irc_catalog_int  
+CATALOG_SOURCE = ICEBERG_REST  
+TABLE_FORMAT = ICEBERG  
+CATALOG_NAMESPACE = 'iceberg_db'  
+REST_CONFIG = (  
+    CATALOG_URI = 'https://glue.<region>.amazonaws.com/iceberg'  
+    CATALOG_API_TYPE = AWS_GLUE  
+    CATALOG_NAME = '<account-id>'  
+    ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS  
 )  
-REST\_AUTHENTICATION \= (  
-    TYPE \= SIGV4  
-    SIGV4\_IAM\_ROLE \= 'arn:aws:iam::\<account-id\>:role/snowflake\_access\_role'  
-    SIGV4\_SIGNING\_REGION \= '\<region\>'  
-    SIGV4\_EXTERNAL\_ID \= '\<external-id\>'  
+REST_AUTHENTICATION = (  
+    TYPE = SIGV4  
+    SIGV4_IAM_ROLE = 'arn:aws:iam::<account-id>:role/snowflake_access_role'  
+    SIGV4_SIGNING_REGION = '<region>'  
+    SIGV4_EXTERNAL_ID = '<external-id>'  
 )  
-REFRESH\_INTERVAL\_SECONDS \= 120
+REFRESH_INTERVAL_SECONDS = 120
 
-ENABLED \= TRUE;
+ENABLED = TRUE;
 ```
 3. Execute the following SQL command and retrieve the value for API\_AWS\_IAM\_USER\_ARN:
 ```yml
-DESCRIBE CATALOG INTEGRATION glue\_irc\_catalog\_int;
+DESCRIBE CATALOG INTEGRATION glue_irc_catalog_int;
 ```
 4. On the IAM console, update the trust relationship for snowflake\_access\_role with the value for API\_AWS\_IAM\_USER\_ARN:
 ```yml
 {  
     "Version": "2012-10-17",  
-    "Statement": \[  
+    "Statement": [  
         {  
             "Sid": "",  
             "Effect": "Allow",  
             "Principal": {  
-                "AWS": \[  
-                   "\<API\_AWS\_IAM\_USER\_ARN\>"  
-                \]  
+                "AWS": [  
+                   "<API_AWS_IAM_USER_ARN>"  
+                ]  
             },  
             "Action": "sts:AssumeRole",  
             "Condition": {  
                 "StringEquals": {  
-                    "sts:ExternalId": \[  
-                        "\<external-id\>"  
-                    \]  
+                    "sts:ExternalId": [  
+                        "<external-id>"  
+                    ]  
                 }  
             }  
         }  
@@ -229,22 +252,22 @@ DESCRIBE CATALOG INTEGRATION glue\_irc\_catalog\_int;
 ```
 5. Verify the catalog integration:
 ```yml
-SELECT SYSTEM$VERIFY\_CATALOG\_INTEGRATION('glue\_irc\_catalog\_int');
+SELECT SYSTEM$VERIFY_CATALOG_INTEGRATION('glue_irc_catalog_int');
 ```
 6. Mount the S3 table as a Snowflake table:
 ```yml
-CREATE OR REPLACE ICEBERG TABLE s3iceberg\_customer  
- CATALOG \= 'glue\_irc\_catalog\_int'  
- CATALOG\_NAMESPACE \= 'iceberg\_db'  
- CATALOG\_TABLE\_NAME \= 'customer'
+CREATE OR REPLACE ICEBERG TABLE s3iceberg_customer  
+ CATALOG = 'glue_irc_catalog_int'  
+ CATALOG_NAMESPACE = 'iceberg_db'  
+ CATALOG_TABLE_NAME = 'customer'
 
- AUTO\_REFRESH \= TRUE;
+ AUTO_REFRESH = TRUE;
 ```
 ## **Query the Iceberg table from Snowflake**
 
 To test the configuration, log in to Snowflake as an admin user and run the following sample query:
 ```yml
-SELECT \* FROM s3iceberg\_customer LIMIT 10;
+SELECT * FROM s3iceberg_customer LIMIT 10;
 ```
 ## **Clean up**
 
@@ -253,12 +276,12 @@ To clean up your resources, complete the following steps:
 1. Delete the database and table in AWS Glue.  
 2. Drop the Iceberg table, catalog integration, and database in Snowflake:
 ```yml
-DROP ICEBERG TABLE iceberg\_customer;
+DROP ICEBERG TABLE iceberg_customer;
 
-DROP CATALOG INTEGRATION glue\_irc\_catalog\_int;
-
-Make sure all resources are properly cleaned up to avoid unexpected charges.
+DROP CATALOG INTEGRATION glue_irc_catalog_int;
 ```
+Make sure all resources are properly cleaned up to avoid unexpected charges.
+
 ## **Conclusion**
 
 In this post, we demonstrated how to establish a secure and efficient connection between your Snowflake environment and SageMaker to query Iceberg tables in Amazon S3. This capability can help your organization maintain a single source of truth while also letting teams use their preferred analytics tools, ultimately breaking down data silos and enhancing collaborative analysis capabilities.
@@ -275,3 +298,23 @@ To further explore and implement this solution in your environment, consider the
   * [Simplify data access for your enterprise using Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/simplify-data-access-for-your-enterprise-using-amazon-sagemaker-lakehouse/)
 
 These resources can help you to implement and optimize this integration pattern for your specific use case. As you begin this journey, remember to start small, validate your architecture with test data, and gradually scale your implementation based on your organization’s needs.
+
+# **About the authors**
+
+### 
+
+### 
+
+### 
+
+### 
+
+### Nidhi Gupta
+![Nidhi Gupta](/images/3-BlogsTranslated/3.2-Blog2/image2.jpg)
+
+[Nidhi](https://www.linkedin.com/in/nidhi-gupta-5b80874/) is a Senior Partner Solutions Architect at AWS, specializing in data and analytics. She helps customers and partners build and optimize Snowflake workloads on AWS. Nidhi has extensive experience leading production releases and deployments, with focus on Data, AI, ML, generative AI, and Advanced Analytics.
+
+### Andries Engelbrecht
+![Andries Engelbrecht](/images/3-BlogsTranslated/3.2-Blog2/image3.jpg)
+
+[Andries](https://www.linkedin.com/in/andries-engelbrecht-427b8b1/)  is a Principal Partner Solutions Engineer at Snowflake working with AWS. He supports product and service integrations, as well the development of joint solutions with AWS. Andries has over 25 years of experience in the field of data and analytics.

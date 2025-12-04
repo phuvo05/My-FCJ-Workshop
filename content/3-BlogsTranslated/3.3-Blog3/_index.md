@@ -4,9 +4,6 @@ weight: 1
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
 # Navigating Amazon GuardDuty protection plans and Extended Threat Detection
 
@@ -117,7 +114,7 @@ These real-world scenarios illustrate how GuardDuty protection plans work in con
 GuardDuty protection plans, coupled with its built-in Extended Threat Detection feature, offer a powerful suite of managed detections to secure your AWS environment. By tailoring your security strategy to your specific workload types and using AI-powered insights, you can significantly enhance your ability to detect and respond to sophisticated threats. To get started with GuardDuty protection plans and Extended Threat Detection, visit the GuardDuty console. Each protection plan includes a 30-day trial at no additional cost per AWS account and AWS Region, allowing you to evaluate the security coverage for your specific needs. Remember, you can adjust your enabled plans at any time to align with your evolving security requirements and workload changes. By using these capabilities, you can strengthen your organization’s threat detection and response in the face of evolving security risks.
 
 ### **Nisha Amthul**
-<img src = "media/image1.jpg">
+![Nisha Amthul](/images/3-BlogsTranslated/3.3-Blog3/image1.jpg)
 Nisha is a Senior Product Marketing Manager at AWS Security, specializing in detection and response solutions. She has a strong foundation in product management and product marketing within the domains of information security and data protection. When not at work, you’ll find her cake decorating, strength training, and chasing after her two energetic kiddos.
 
 ### 
@@ -125,10 +122,10 @@ Nisha is a Senior Product Marketing Manager at AWS Security, specializing in det
 ### 
 
 ### **Sujay Doshi**
-<img src = "media/image3.png">
+![Sujay Doshi](/images/3-BlogsTranslated/3.3-Blog3/image2.jpeg)
 Sujay is a Senior Product Manager at AWS, focusing on security services. With over 10 years of experience in product management and software development, he leads the product strategy for Amazon GuardDuty. Prior to AWS, Sujay held leadership roles at various technology companies. He’s passionate about cloud security and describes himself as “a data nerd with a penchant for finding needles in the cyber haystack.
 
 ### **Shachar Hirshberg**
-<img src = "media/image2.jpeg">
+![Shachar Hirshberg](/images/3-BlogsTranslated/3.3-Blog3/image3.png)
 Shachar was a Senior Product Manager for Amazon GuardDuty with over a decade of experience in building, designing, launching, and scaling enterprise software. He is passionate about further improving how customers harness AWS services to enable innovation and enhance the security of their cloud environments. Outside of work, Shachar is an avid traveler and a skiing enthusiast.
 

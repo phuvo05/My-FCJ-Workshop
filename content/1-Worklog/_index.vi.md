@@ -1,39 +1,54 @@
 ---
-title: "Nhật ký công việc"
+title: "Worklog - Hành Trình Học AWS"
 weight: 1
-chapter: false
-pre: " <b> 1. </b> "
+chapter: true
+pre: "<b> 1. </b>"
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Worklog
 
-**Trong trang này** bạn sẽ cần giới thiệu worklog của bạn **như thế nào**? Bạn hoàn thành chương trình trong vòng **bao nhiêu tuần**? Bạn **đã làm gì** trong các tuần đó?
+## Tổng quan
 
+Đây là nhật ký học tập ghi lại hành trình học **AWS** bắt đầu từ **ngày 8/9/2025**.
 
-Thông thường và cũng là tiêu chuẩn, một worklog được thực hiện trong khoảng 3 tháng (trong suốt thời gian thực tập) với nội dung các tuần như sau:
+### Cấu trúc
 
-**Tuần 1:** [Làm quen với AWS và các dịch vụ cơ bản trong AWS](1.1-week1/)
+Worklog được tổ chức theo **tuần**, mỗi tuần gồm **5 ngày làm việc** (Thứ Hai đến Thứ Sáu).
 
-**Tuần 2:** [Làm công việc A...](1.2-week2/)
+### Nội dung chính
 
-**Tuần 3:** [Làm công việc B...](1.3-week3/)
+1. **Nền tảng Điện toán Đám mây**
+   - Kiến thức cơ bản về AWS, hạ tầng toàn cầu, công cụ quản lý  
+   - Tối ưu chi phí, các gói hỗ trợ  
+   - Bộ khung Well-Architected Framework  
 
-**Tuần 4:** [Làm công việc C...](1.4-week4/)
+2. **Mạng (Networking)**
+   - VPC, subnet, security group, NACL  
+   - Cân bằng tải (ALB, NLB, GWLB)  
+   - VPC Peering, Transit Gateway  
+   - VPN, Direct Connect  
 
-**Tuần 5:** [Làm công việc D...](1.5-week5/)
+3. **Tính toán (Compute)**
+   - EC2, AMI, EBS, Instance Store  
+   - Auto Scaling, mô hình định giá  
+   - Lightsail, EFS, FSx  
 
-**Tuần 6:** [Làm công việc E...](1.6-week6/)
+4. **Lưu trữ (Storage)**
+   - S3, các lớp lưu trữ, Glacier  
+   - Snow Family, Storage Gateway  
+   - Khôi phục thảm họa, AWS Backup  
 
-**Tuần 7:** [Làm công việc G...](1.7-week7/)
+5. **Bảo mật & Danh tính (Security & Identity)**
+   - IAM, Cognito, Organizations  
+   - KMS, Security Hub  
+   - Identity Center (SSO)  
 
-**Tuần 8:** [Làm công việc H...](1.8-week8/)
+6. **Cơ sở dữ liệu (Database)**
+   - RDS, Aurora, Redshift  
+   - ElastiCache, DMS  
+   - Thực hành tốt trong quản lý cơ sở dữ liệu  
 
-**Tuần 9:** [Làm công việc I...](1.9-week9/)
-
-**Tuần 10:** [Làm công việc L...](1.10-week10/)
-
-**Tuần 11:** [Làm công việc M...](1.11-week11/)
-
-**Tuần 12:** [Làm công việc N...](1.12-week12/)
+7. **Chủ đề Nâng cao (Advanced Topics)**
+   - Serverless (Lambda)  
+   - Containers (ECS, EKS, ECR)  
+   - Giám sát hệ thống (CloudWatch, X-Ray, CloudTrail)
