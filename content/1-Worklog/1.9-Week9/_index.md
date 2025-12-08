@@ -1,8 +1,8 @@
 ---
-title: "Week 9 Worklog"
-weight: 1
+title: "Week 9 - Advanced AWS Services"
+weight: 9
 chapter: false
-pre: " <b> 1.9. </b> "
+pre: "<b> 1.9. </b>"
 ---
 
 

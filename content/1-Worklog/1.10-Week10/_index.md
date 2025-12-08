@@ -1,8 +1,8 @@
 ---
-title: "Week 10 Worklog"
-weight: 2
+title: "Week 10 - Serverless & Containers"
+weight: 10
 chapter: false
-pre: " <b> 1.10. </b> "
+pre: "<b> 1.10. </b>"
 ---
 
 

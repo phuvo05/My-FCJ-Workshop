@@ -1,8 +1,8 @@
 ---
-title: "Week 11 Worklog"
-weight: 2
+title: "Week 11 - DevOps & Automation"
+weight: 11
 chapter: false
-pre: " <b> 1.11. </b> "
+pre: "<b> 1.11. </b>"
 ---
 
 
