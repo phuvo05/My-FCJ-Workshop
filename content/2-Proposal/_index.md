@@ -50,8 +50,7 @@ FitAI Challenge is an intelligent sports training platform that applies an AWS S
 The system’s goal is to record workout data, analyze performance, and generate AI-powered feedback to provide personalized coaching for users.
 Data from the web application is sent to Amazon API Gateway, processed by AWS Lambda (Java), and stored in Amazon S3 along with the Docker Database.
 
-![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture_1.png)
-
+![FitAI Challenge Architecture](/images/2-Proposal/2.jpg)
 ### AWS Services Used
 | **Service**                                   | Role                                                                                  |
 | --------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -86,70 +85,101 @@ SaveResultLambda: stores training results and AI feedback.
 
 ### 4. Technical Implementation
 **Implementation Phases**
-| Phase                             | Description                                                             | Achieved Outcome                          |
-| --------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------- |
-| 1. AWS Infrastructure Setup       | Deploy Route 53, WAF, S3, Lambda, API Gateway, Cognito, Docker DB.      | Basic infrastructure ready.               |
-| 2. CI/CD Pipeline                 | Set up CodeCommit + CodeBuild + CodeDeploy for Java backend and Lambda. | Automated backend deployment.             |
-| 3. Build Lambda Functions (Java)  | Create Lambdas for Upload, Auth, AI Pipeline, and Save Result.          | Completed serverless backend.             |
-| 4. AI Pipeline                    | Integrate SageMaker (pose estimation model) and Bedrock (LLM feedback). | AI runs smoothly with automated feedback. |
-| 5. Web App Deployment             | Build web → Deploy to S3 + CloudFront.                                  | User interface runs online.               |
-| 6. Monitoring & Cost Optimization | Use CloudWatch + Cost Explorer for activity tracking.                   | Stable system with low cost.              |
+
+| Phase | Description | Achieved Outcome |
+|---|---|---|
+| 1. AWS Infrastructure Setup | Deploy VPC, Private Subnets, Route 53, WAF, S3, API Gateway, Lambda, Cognito, RDS MySQL, VPC Endpoints (S3, Bedrock). | Secure, isolated, and ready-to-use base infrastructure. |
+| 2. CI/CD Pipeline | Set up CodeCommit + CodeBuild + CodeDeploy + CodePipeline for Java backend and Lambda; build & deploy web to S3/CloudFront. | Automated deployment for backend and frontend. |
+| 3. Build Lambda Functions (Java) | Create Lambdas for Auth, Upload, AI Pipeline, Save Result; connect to RDS MySQL and S3. | Completed serverless backend. |
+| 4. AI Pipeline | Integrate SQS, Step Functions, and Bedrock; build workflow: receive job → analyze data → score → generate AI feedback. | Smooth AI operation with automated user feedback. |
+| 5. Web App Deployment | Build web app → Deploy to S3 + CloudFront → configure domain in Route 53. | Stable online user interface. |
+| 6. Monitoring & Cost Optimization | Use CloudWatch + Cost Explorer to track logs, performance, and costs; tune Lambda, RDS, and CloudFront configurations. | Stable system with low cost and tight monitoring. |
 
 ### 5. Timeline & Milestones
-- *Before internship (Month 0)*: Design detailed architecture and experiment with basic AI models.
-- *Internship (Month 1–3)*:
-  - Month 1: Set up infrastructure, configure Docker DB, Cognito, API Gateway, and Lambda.
-  - Month 2: Develop and complete the Java backend, build the AI pipeline with SageMaker & Bedrock.
-  - Month 3: Testing & Demo — perform performance testing, run pilot with 10–20 users, and prepare the final demo.
-- *Post-deployment*: Continue research and development for one year.
+**Before internship (Month 0):**
+
+Design detailed architecture based on the new diagram.
+
+Experiment with a simple AI pipeline using Bedrock (text feedback).
+
+**Internship (Months 1–3):**
+
+Month 1:
+
+Set up infrastructure: VPC, Subnets, RDS MySQL, Cognito, API Gateway, Lambda, S3, CloudFront.
+
+Configure CI/CD (CodeCommit, CodeBuild, CodeDeploy, CodePipeline).
+
+Month 2:
+
+Develop Java backend and Lambda functions.
+
+Build the AI pipeline with SQS, Step Functions, and Bedrock.
+
+Month 3:
+
+Integrate frontend with backend.
+
+Run performance tests, pilot with 10–20 users, prepare the final demo.
+
+**Post-deployment:**
+
+Continue optimizing the AI model and add deeper gamification over the next year.
 
 ### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
+You can view costs on the AWS Pricing Calculator, or download the attached budget estimate.
 
-### Infrastructure Costs
+**Infrastructure Costs (MVP estimate)**
+
 - AWS Services:
-  - Amazon API Gateway: 0.38 USD / month (300 requests/month, 1 KB/request)
-  - Amazon Bedrock: 0.32 USD / month (1 req/min, 350 input tokens, 70 output tokens)
-  - Amazon CloudFront: 1.20 USD / month (5 GB transfer, 500,000 HTTPS requests)
-  - Amazon CloudWatch: 1.85 USD / month (5 metrics, 0.5 GB logs)
-  - Amazon Cognito: 0.00 USD / month (100 MAU, Advanced Security enabled)
-  - Amazon Route 53: 0.51 USD / month (1 hosted zone)
-  - Amazon SageMaker: 0.02 USD / month (1 request/month, 0.2 GB in/out, 500 ms/request)
-  - Amazon S3: 0.04 USD / month (1 GB storage, 1,000 PUT/POST/LIST, 20,000 GET)
-  - Amazon SES: 0.30 USD / month (3,000 emails from EC2)
-  - Amazon Simple Queue Service (SQS): 0.00 USD / month (0.005 million requests/month)
-  - AWS Lambda: 0.00 USD / month (300,000 requests/month, 512 MB ephemeral storage)
-  - AWS Step Functions: 0.00 USD / month (500 workflows, 5 state transitions/workflow)
-  - AWS Web Application Firewall (WAF): 6.12 USD / month (1 Web ACL, 1 rule)
+  - Amazon API Gateway: 0.38 USD / month (≈300 requests/month, 1 KB/request).
+  - Amazon Bedrock: 0.32 USD / month (1 req/min, 350 input tokens, 70 output tokens).
+  - Amazon CloudFront: 1.20 USD / month (5 GB transfer, 500,000 HTTPS requests).
+  - Amazon CloudWatch: 1.85 USD / month (5 metrics, 0.5 GB logs).
+  - Amazon Cognito: 0.00 USD / month (≤100 MAU).
+  - Amazon Route 53: 0.51 USD / month (1 hosted zone).
+  - Amazon S3: 0.04 USD / month (1 GB storage, 1,000 PUT/POST/LIST, 20,000 GET).
+  - Amazon SES: 0.30 USD / month (3,000 emails from EC2/Lambda).
+  - Amazon Simple Queue Service (SQS): ≈0.00 USD / month (0.005 million requests/month).
+  - AWS Lambda: 0.00 USD / month (≈300,000 requests/month, 512 MB ephemeral storage).
+  - AWS Step Functions: 0.00 USD / month (500 workflows, 5 state transitions/workflow).
+  - AWS Web Application Firewall (WAF): 6.12 USD / month (1 Web ACL, 1 rule).
+  - Amazon RDS MySQL (auto-stop mode): 0–3 USD / month (depending on runtime).
 
-*Total*: 10.74 USD / month; 128.88 USD / 12 months
+**Total:** around 10.7 – 12 USD / month depending on RDS usage; equivalent to 128 – 144 USD / 12 months.
 
 ### 7. Risk Assessment
-#### Risk Matrix
-- Technical: AI misidentifies incorrect movements or encounters errors in processing image/video data.
-- User: Users fail to maintain workout habits, leading to low retention.
-- Market & Partners: Difficulty in expanding the partner network for rewards and brand collaborations.
+**Risk Matrix**
 
-#### Mitigation Strategies
-- Continuously optimize the AI model through regular and ongoing training. Additionally, user consent can be obtained to use their workout videos to improve model performance.
-- Implement deeper gamification features (streak chains, friend groups, attractive rewards).
-- Research partners thoroughly and clearly present collaboration value to establish long-term partnerships.
+- Technical: AI misidentifies movements or fails on image/video processing; misconfigured VPC/Endpoints cause service disruption.
+- User: Users don’t maintain workout habits; low return rate.
+- Market & Partners: Hard to expand reward partners and co-branding; partner policy changes.
+- Cost: Unexpected cost increases when user volume spikes (CloudFront, Bedrock).
 
-#### Contingency Plans
-- When the AI encounters errors → add a fallback system to switch between different model versions.
-- When user engagement declines → launch seasonal community challenges and add vouchers during special occasions (Holidays, New Year, Summer, etc.).
-- When a commercial partner withdraws → maintain an internal FitPoints reward system with small gifts while seeking replacement partners.
+**Mitigation Strategies**
+
+- Optimize AI models with continuous training; monitor quality via logs; add basic validation before scoring.
+- Deepen gamification (streak chains, friend groups, seasonal challenges, appealing rewards).
+- Prepare clear value propositions; diversify partner types (sports, healthy food, entertainment).
+- Set AWS Budgets + Alarms per service (CloudFront, Bedrock, Lambda, RDS).
+
+**Contingency Plans**
+
+- If AI fails → use fallback logic (simple time/rep-based scoring) and clearly notify users.
+- If user volume drops → launch community challenges, pair with social media campaigns.
+- If commercial partners withdraw → maintain internal FitPoints with small rewards (in-app badges/vouchers) while finding new partners.
 
 
 ### 8. Expected Outcomes
-#### Technical Improvements: 
-- Complete the AI motion recognition system with an accuracy rate above 90%.
-- Ensure the application runs stably and supports 10,000 concurrent active users.
-- Optimize the serverless architecture to keep infrastructure costs under 1 USD/month during the MVP phase.
+**Technical Improvements:**
 
-#### Long-term Value
-- Build a community of Vietnamese users who are passionate about sports and sustainable health.
+- Complete the AI motion recognition system with >90% accuracy.
+- Stable app that supports up to 10,000 concurrent active users on serverless architecture.
+- Optimize architecture to keep infra cost around 10–12 USD/month in the early stage.
 
+**Long-term Value:**
+
+- Build a sustainable Vietnamese fitness community connected via online challenges.
 - Become the pioneering “AI + Fitness + Gamification” platform in Vietnam.
+- Establish a workout data foundation to expand into health analytics, personalized training programs, and future AI projects.
 

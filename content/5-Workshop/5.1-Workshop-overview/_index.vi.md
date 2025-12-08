@@ -5,14 +5,38 @@ chapter : false
 pre : " <b> 5.1. </b> "
 ---
 
-#### Giới thiệu về VPC Endpoint
+## Giới thiệu về Amazon Bedrock và Converse API
 
-+ Điểm cuối VPC (endpoint) là thiết bị ảo. Chúng là các thành phần VPC có thể mở rộng theo chiều ngang, dự phòng và có tính sẵn sàng cao. Chúng cho phép giao tiếp giữa tài nguyên điện toán của bạn và dịch vụ AWS mà không gây ra rủi ro về tính sẵn sàng.
-+ Tài nguyên điện toán đang chạy trong VPC có thể truy cập Amazon S3 bằng cách sử dụng điểm cuối Gateway. Interface Endpoint  PrivateLink có thể được sử dụng bởi tài nguyên chạy trong VPC hoặc tại TTDL.
+**Amazon Bedrock** là nền tảng AI fully managed của AWS, cung cấp nhiều mô hình ngôn ngữ lớn (LLM) như Claude, Llama, Mistral và Titan. Các mô hình này có thể được gọi trực tiếp qua API mà không cần triển khai hay quản lý hạ tầng.
 
-#### Tổng quan về workshop
-Trong workshop này, bạn sẽ sử dụng hai VPC.
-+ **"VPC Cloud"** dành cho các tài nguyên cloud như Gateway endpoint và EC2 instance để kiểm tra.
-+ **"VPC On-Prem"** mô phỏng môi trường truyền thống như nhà máy hoặc trung tâm dữ liệu của công ty. Một EC2 Instance chạy phần mềm StrongSwan VPN đã được triển khai trong "VPC On-prem" và được cấu hình tự động để thiết lập đường hầm VPN Site-to-Site với AWS Transit Gateway. VPN này mô phỏng kết nối từ một vị trí tại TTDL (on-prem) với AWS cloud. Để giảm thiểu chi phí, chỉ một phiên bản VPN được cung cấp để hỗ trợ workshop này. Khi lập kế hoạch kết nối VPN cho production workloads của bạn, AWS khuyên bạn nên sử dụng nhiều thiết bị VPN để có tính sẵn sàng cao.
+Workshop này sử dụng **Converse API**, giao diện thống nhất cho các mô hình Bedrock *có hỗ trợ Converse*. Với Converse API:
 
-![overview](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+- Bạn có thể dùng chung một cấu trúc request/response cho nhiều mô hình.
+- Việc chuyển đổi mô hình chỉ cần đổi **`modelId`**.
+- Toàn bộ logic conversation được đơn giản hóa và nhất quán.
+
+Converse API giúp bạn dễ dàng xây dựng dịch vụ AI trên kiến trúc serverless mà không phụ thuộc vào từng mô hình cụ thể.
+
+---
+
+## Tổng quan về workshop
+
+Trong workshop này, bạn sẽ triển khai một **API Hỏi–Đáp AI đơn giản**. Ứng dụng sẽ nhận câu hỏi từ người dùng, gửi đến mô hình Bedrock thông qua Lambda, và trả về câu trả lời dưới dạng văn bản.
+
+Kiến trúc gồm ba thành phần chính:
+
+- **AWS Lambda** – xử lý request và gọi Bedrock bằng Converse API.  
+- **Amazon Bedrock Runtime** – thực thi suy luận với mô hình được cấu hình.  
+- **Amazon API Gateway** – cung cấp HTTP endpoint để client gửi câu hỏi.
+
+Luồng hoạt động:
+
+1. Người dùng gửi request đến API Gateway.  
+2. API Gateway chuyển request đến Lambda.  
+3. Lambda gửi prompt đến Bedrock qua Converse API.  
+4. Bedrock thực thi suy luận và trả về kết quả.  
+5. Lambda trả kết quả cho client.
+
+Sơ đồ kiến trúc workshop:
+
+![overview](/5-Workshop/5.1-Workshop-overview/diagram-bedrock.png)

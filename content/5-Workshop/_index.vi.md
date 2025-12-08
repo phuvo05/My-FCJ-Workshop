@@ -5,28 +5,35 @@ chapter: false
 pre: " <b> 5. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Xây API AI đơn giản với AWS Lambda + Bedrock + API Gateway
 
+## Tổng quan
 
-# Đảm bảo truy cập Hybrid an toàn đến S3 bằng cách sử dụng VPC endpoint
+**Amazon Bedrock** là dịch vụ fully managed cung cấp các mô hình ngôn ngữ lớn (LLM) như **Claude**, **Llama**, **Mistral** và **Titan**.  
+Bạn có thể tích hợp AI vào ứng dụng chỉ thông qua API mà không cần quản lý hạ tầng hay tự vận hành mô hình.
 
-#### Tổng quan
+Trong workshop này, bạn sẽ xây dựng một **API AI Hỏi – Đáp (Q&A)** đơn giản bằng cách kết hợp:
 
-**AWS PrivateLink** cung cấp kết nối riêng tư đến các dịch vụ aws từ VPCs hoặc trung tâm dữ liệu (on-premise) mà không làm lộ lưu lượng truy cập ra ngoài public internet.
+- **AWS Lambda** – xử lý request và gọi Bedrock  
+- **Amazon Bedrock Runtime** – gửi prompt và nhận kết quả từ mô hình  
+- **Amazon API Gateway** – tạo HTTP endpoint để client gửi câu hỏi  
 
-Trong bài lab này, chúng ta sẽ học cách tạo, cấu hình, và kiểm tra VPC endpoints để cho phép workload của bạn tiếp cận các dịch vụ AWS mà không cần đi qua Internet công cộng.
+Điểm quan trọng của workshop là bạn sẽ dùng **Converse API** – giao diện thống nhất cho các mô hình Bedrock **có hỗ trợ Converse** (ví dụ: Claude 3, Claude 3.5, Llama 3.1, Mistral 24.07…).  
+Nhờ đó:
 
-Chúng ta sẽ tạo hai loại endpoints để truy cập đến Amazon S3: gateway vpc endpoint và interface vpc endpoint. Hai loại vpc endpoints này mang đến nhiều lợi ích tùy thuộc vào việc bạn truy cập đến S3 từ môi trường cloud hay từ trung tâm dữ liệu (on-premise).
-+ **Gateway** - Tạo gateway endpoint để gửi lưu lượng đến Amazon S3 hoặc DynamoDB using private IP addresses. Bạn điều hướng lưu lượng từ VPC của bạn đến gateway endpoint bằng các bảng định tuyến (route tables)
-+ **Interface** - Tạo interface endpoint để gửi lưu lượng đến các dịch vụ điểm cuối (endpoints) sử dụng Network Load Balancer để phân phối lưu lượng. Lưu lượng dành cho dịch vụ điểm cuối được resolved bằng DNS.
+- Chỉ cần **đổi `modelId`** trong Lambda là có thể chuyển sang mô hình khác  
+- Không phải thay đổi logic xử lý conversation  
+- Dễ dàng thử nghiệm, so sánh nhiều mô hình trên cùng một API
 
-#### Nội dung
+> Lưu ý: Chỉ những mô hình Bedrock **có hỗ trợ Converse API** mới dùng được với code trong workshop này.
 
-1. [Tổng quan về workshop](5.1-Workshop-overview/)
-2. [Chuẩn bị](5.2-Prerequiste/)
-3. [Truy cập đến S3 từ VPC](5.3-S3-vpc/)
-4. [Truy cập đến S3 từ TTDL On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (làm thêm)](5.5-Policy/)
-6. [Dọn dẹp tài nguyên](5.6-Cleanup/)
+---
+
+## Nội dung Workshop
+
+1. [Giới thiệu](5.1-Workshop-overview/)
+2. [Chuẩn bị](5.2-Prerequisite/)
+3. [Lambda gọi Bedrock](5.3-Lambda-call-bedrock/)
+4. [Tạo API Gateway](5.4-Api-gateway/)
+5. [Kiểm thử](5.5-Testing-and-logs/)
+6. [Dọn dẹp](5.6-Cleanup/)

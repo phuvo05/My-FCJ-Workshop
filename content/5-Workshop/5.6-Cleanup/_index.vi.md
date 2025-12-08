@@ -5,32 +5,78 @@ chapter : false
 pre : " <b> 5.6. </b> "
 ---
 
-#### Dọn dẹp tài nguyên
+## Dọn dẹp tài nguyên (Cleanup)
 
-Xin chúc mừng bạn đã hoàn thành xong lab này!
-Trong lab này, bạn đã học về các mô hình kiến trúc để truy cập Amazon S3 mà không sử dụng Public Internet.
+Sau khi hoàn thành workshop, bạn nên xóa các tài nguyên AWS không còn sử dụng để tránh phát sinh chi phí.  
+Dưới đây là danh sách các dịch vụ bạn đã tạo và cách xoá chúng.
 
-+ Bằng cách tạo Gateway endpoint, bạn đã cho phép giao tiếp trực tiếp giữa các tài nguyên EC2 và Amazon S3, mà không đi qua Internet Gateway.
-Bằng cách tạo Interface endpoint, bạn đã mở rộng kết nối S3 đến các tài nguyên chạy trên trung tâm dữ liệu trên chỗ của bạn thông qua AWS Site-to-Site VPN hoặc Direct Connect.
+---
 
-#### Dọn dẹp
-1. Điều hướng đến Hosted Zones trên phía trái của bảng điều khiển Route 53. Nhấp vào tên của  s3.us-east-1.amazonaws.com zone. Nhấp vào Delete và xác nhận việc xóa bằng cách nhập từ khóa "delete".
+## 🔹 1. Xoá API Gateway
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+1. Mở **API Gateway Console**  
+2. Chọn API bạn đã tạo, ví dụ: `bedrock-chatbot-api`  
+3. Chọn **Actions → Delete**  
+4. Xác nhận xoá
 
-2. Disassociate Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
+Điều này sẽ ngăn mọi request đến Lambda và tránh bị tính phí API.
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+---
 
-4.Mở console của CloudFormation và xóa hai stack CloudFormation mà bạn đã tạo cho bài thực hành này:
-+ PLOnpremSetup
-+ PLCloudSetup
+## 🔹 2. Xoá Lambda Function
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
+1. Mở **Lambda Console**  
+2. Chọn hàm `bedrock-chatbot-lambda`  
+3. Chọn **Actions → Delete function**  
+4. Xác nhận xoá
 
-5. Xóa các S3 bucket
+---
 
-+ Mở bảng điều khiển S3
-+ Chọn bucket chúng ta đã tạo cho lab, nhấp chuột và xác nhận là empty. Nhấp Delete và xác nhận delete.
-+ 
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)
+## 🔹 3. Xoá IAM Role và Policy
+
+### **Xoá Policy:**
+
+1. Mở **IAM Console → Policies**  
+2. Tìm `lambda-bedrock`  
+3. Bấm **Delete**
+
+### **Xoá Role:**
+
+1. Mở **IAM Console → Roles**  
+2. Tìm `lambda-bedrock-role`  
+3. Bấm **Delete**
+
+> ⚠️ Bạn chỉ xoá được Role sau khi đã xoá Lambda Function sử dụng nó.
+
+---
+
+## 🔹 4. Kiểm tra CloudWatch Log Groups (tuỳ chọn)
+
+Log của Lambda vẫn còn trong CloudWatch và có thể chiếm dung lượng lưu trữ lâu dài.
+
+1. Mở **CloudWatch Console**  
+2. Chọn **Logs → Log groups**  
+3. Tìm log của Lambda (ví dụ: `/aws/lambda/bedrock-chatbot-lambda`)  
+4. Chọn **Actions → Delete log group**
+
+---
+
+## 🔹 5. Kiểm tra các tài nguyên khác (nếu có)
+
+Tuỳ theo cách bạn mở rộng workshop, bạn có thể đã tạo thêm các tài nguyên như:
+
+- S3 bucket  
+- Step Functions  
+- KMS key  
+- VPC / Security Groups  
+
+Nếu không dùng nữa, hãy xoá để tránh phí.
+
+---
+
+## 🎉 Hoàn tất!
+
+Bạn đã dọn dẹp toàn bộ tài nguyên được tạo trong workshop này.  
+Giờ tài khoản AWS của bạn sẽ không phát sinh thêm chi phí từ phần lab.
+
+Cảm ơn bạn đã tham gia workshop!  

@@ -4,27 +4,36 @@ weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Secure Hybrid Access to S3 using VPC Endpoints
+# Build a Simple AI API with AWS Lambda + Bedrock + API Gateway
 
-#### Overview
+## Overview
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+**Amazon Bedrock** is a fully managed service that provides access to leading large language models (LLMs) such as **Claude**, **Llama**, **Mistral**, and **Titan**.  
+You can integrate AI features into your applications using simple API calls without managing infrastructure or hosting models yourself.
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
+In this workshop, you will build a simple **AI Q&A API** using:
 
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
+- **AWS Lambda** – handles incoming requests and calls Bedrock  
+- **Amazon Bedrock Runtime** – sends prompts and receives model responses  
+- **Amazon API Gateway** – exposes an HTTP endpoint for client requests  
 
-#### Content
+A key aspect of this workshop is the use of the **Converse API** — a unified interface for Bedrock models **that support the Converse capability** (e.g., Claude 3, Claude 3.5, Llama 3.1, Mistral 24.07…).  
+With the Converse API:
 
-1. [Workshop overview](5.1-Workshop-overview)
-2. [Prerequiste](5.2-Prerequiste/)
-3. [Access S3 from VPC](5.3-S3-vpc/)
-4. [Access S3 from On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (Bonus)](5.5-Policy/)
-6. [Clean up](5.6-Cleanup/)
+- You can switch models by simply changing the **`modelId`** in Lambda  
+- There is no need to rewrite conversation-handling logic  
+- You can easily test or compare multiple models with the same API flow  
+
+> Note: Only models **that support Converse API** can be used with the code in this workshop.
+
+---
+
+## Workshop Content
+
+1. [Introduction](5.1-Workshop-overview/)
+2. [Prerequisites](5.2-Prerequisite/)
+3. [Lambda Calls Bedrock](5.3-Lambda-call-bedrock/)
+4. [Create API Gateway](5.4-Api-gateway/)
+5. [Testing](5.5-Testing-and-logs/)
+6. [Cleanup](5.6-Cleanup/)

@@ -44,39 +44,52 @@ Mở ra mô hình kinh doanh “Fitness + Gamification + Thương mại điện 
 Cấu trúc cloud serverless giúp giảm chi phí vận hành và dễ mở rộng.
 MVP có thể phát triển trong 3 tháng đầu, với chi phí hạ tầng thấp (ước tính 0,80 USD/tháng trên AWS). 
 
-### 3. Kiến trúc giải pháp  
-FitAI Challenge là nền tảng huấn luyện thể thao thông minh áp dụng kiến trúc AWS Serverless kết hợp AI/ML pipeline.
-Mục tiêu của hệ thống là ghi nhận dữ liệu luyện tập, phân tích hiệu suất, và sinh phản hồi tự động bằng AI để huấn luyện người dùng một cách cá nhân hóa.
-Dữ liệu từ ứng dụng web được gửi lên Amazon API Gateway, xử lý bởi AWS Lambda (Java) và lưu trữ trong Amazon S3 cùng Docker Database. 
+### 3. Kiến trúc giải pháp
+FitAI Challenge là nền tảng huấn luyện thể thao thông minh áp dụng kiến trúc AWS Serverless kết hợp AI/ML pipeline trong một Private VPC.
 
-![FitAI Challenge Architecture](/images/2-Proposal/FitAI_Challenge_Architecture_1.png)
+Mục tiêu của hệ thống là:
 
-Dịch vụ AWS sử dụng:
-| **Dịch vụ**                                   | **Vai trò**                                                                       |
-| --------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Amazon Route 53**                           | Quản lý tên miền và định tuyến lưu lượng đến CloudFront.                          |
-| **AWS WAF**                                   | Bảo vệ tầng frontend và API khỏi các tấn công DDoS, OWASP.                        |
-| **Amazon CloudFront**                         | Phân phối nội dung tĩnh (web app build từ Java web, HTML, CSS, JS).               |
-| **Amazon API Gateway**                        | Tiếp nhận yêu cầu từ frontend và chuyển tiếp đến các Lambda.                      |
-| **AWS Lambda (Java)**                         | Xử lý logic nghiệp vụ (đăng ký, đăng nhập, upload dữ liệu, scoring, AI pipeline). |
-| **AWS Step Functions & SQS**                  | Điều phối workflow giữa các Lambda và SageMaker/Bedrock.                          |
-| **Amazon Cognito**                            | Xác thực người dùng, quản lý phiên đăng nhập và phân quyền.                       |
-| **Amazon S3**                                 | Lưu trữ dữ liệu thô, video, ảnh và kết quả phân tích.                             |
-| **Docker**                                    | Chạy backend Java Spring Boot API và lưu trữ database (PostgreSQL hoặc MongoDB).  |
-| **Amazon SageMaker**                          | Chạy inference mô hình computer vision/pose estimation.             |
-| **Amazon Bedrock**                            | Sinh phản hồi bằng ngôn ngữ tự nhiên, gợi ý luyện tập, tổng kết kết quả.          |
-| **Amazon SES**                                | Gửi email xác thực và thông báo kết quả người dùng.                               |
-| **Amazon CloudWatch**                         | Theo dõi log, giám sát Lambda, chi phí và hiệu suất.                              |
-| **IAM**                                       | Quản lý quyền truy cập và bảo mật giữa các dịch vụ.                               |
-| **AWS CodePipeline / CodeBuild / CodeDeploy** | CI/CD pipeline để tự động triển khai Java backend và Lambda.                      |
+Ghi nhận dữ liệu luyện tập (video, ảnh, thông số).
+
+Phân tích hiệu suất và tư thế bài tập.
+
+Sinh phản hồi tự động bằng AI để huấn luyện người dùng một cách cá nhân hóa.
+
+Dữ liệu từ ứng dụng web được gửi đến Amazon API Gateway, xử lý bởi AWS Lambda (Java) bên trong Private Subnet, lưu trữ trong Amazon RDS MySQL và Amazon S3.
+
+Các tác vụ phân tích AI được điều phối qua AWS Step Functions và Amazon SQS, gọi Amazon Bedrock thông qua Interface Endpoint. Kiến trúc bám sát sơ đồ mới của nhóm:
+
+![FitAI Challenge Architecture](/images/2-Proposal/2.jpg)
+
+**Dịch vụ AWS sử dụng:**
+
+| Dịch vụ | Vai trò |
+| --- | --- |
+| Amazon Route 53 | Quản lý tên miền và định tuyến lưu lượng đến CloudFront. |
+| AWS WAF | Bảo vệ tầng frontend và API khỏi các tấn công phổ biến (DDoS, OWASP Top 10). |
+| Amazon CloudFront | Phân phối nội dung tĩnh (web app build từ React/Next.js, HTML, CSS, JS) với độ trễ thấp. |
+| Amazon S3 | Lưu trữ web tĩnh, video/ảnh bài tập, kết quả phân tích AI. |
+| Amazon API Gateway | Tiếp nhận yêu cầu từ frontend và chuyển tiếp đến các Lambda backend. |
+| Amazon Cognito | Xác thực người dùng, quản lý phiên đăng nhập và phân quyền. |
+| AWS Lambda (Java) | Xử lý logic nghiệp vụ (đăng ký, đăng nhập, upload dữ liệu, scoring, kích hoạt AI pipeline). |
+| Amazon RDS MySQL | Cơ sở dữ liệu quan hệ chính, lưu người dùng, thử thách, lịch sử luyện tập, FitPoints. |
+| VPC Gateway Endpoint (S3) | Cho phép Lambda trong Private Subnet truy cập S3 nội bộ mà không ra Internet công cộng. |
+| Interface Endpoint (Bedrock) | Kết nối riêng (PrivateLink) từ VPC đến Amazon Bedrock để gọi mô hình AI một cách bảo mật. |
+| Amazon SQS | Hàng đợi lưu trữ nhiệm vụ phân tích AI từ Lambda. |
+| AWS Step Functions | Điều phối workflow xử lý AI: trích xuất frame, phân tích, chấm điểm, gọi Bedrock. |
+| Amazon Bedrock | Sinh phản hồi bằng ngôn ngữ tự nhiên: nhận xét tư thế, gợi ý cải thiện, tổng kết kết quả. |
+| Amazon SES | Gửi email xác thực tài khoản, thông báo kết quả thử thách và tổng kết tuần/tháng. |
+| Amazon CloudWatch | Theo dõi log, giám sát Lambda, API Gateway, chi phí và hiệu suất hệ thống. |
+| AWS IAM | Quản lý quyền truy cập và bảo mật giữa các dịch vụ. |
+| AWS CodeCommit / CodeBuild / CodeDeploy / CodePipeline | Thiết lập CI/CD để tự động build, test và deploy backend, frontend và Lambda. |
 
 **Thiết kế thành phần**
 
 Frontend Layer:
 
-Web app hiển thị giao diện người dùng, kết nối đến API Gateway.
+Web app hiển thị giao diện người dùng (React/Next.js), kết nối đến API Gateway.
 
-Nội dung được build và deploy lên S3 + CloudFront.
+Nội dung được build và deploy lên S3, phân phối qua CloudFront.
 
 Người dùng truy cập qua Route 53 → WAF → CloudFront → API Gateway.
 
@@ -84,82 +97,123 @@ Application Layer:
 
 API Gateway tiếp nhận yêu cầu từ frontend.
 
-Lambda (Java) thực thi các chức năng nghiệp vụ:
+Lambda (Java) thực thi các chức năng nghiệp vụ chính:
 
-AuthLambda: đăng nhập / xác thực người dùng.
+AuthLambda: đăng nhập / xác thực người dùng qua Cognito.
 
-UploadLambda: nhận dữ liệu tập luyện, hình ảnh hoặc video.
+UploadLambda: nhận metadata và thông tin file/video bài tập.
 
-AIPipelineLambda: kích hoạt workflow AI (SageMaker + Bedrock).
+AIPipelineLambda: gửi nhiệm vụ phân tích vào SQS và kích hoạt Step Functions.
 
-SaveResultLambda: lưu kết quả huấn luyện và phản hồi AI.
+SaveResultLambda: ghi kết quả luyện tập và phản hồi AI vào RDS + S3.
 
-### 4. Triển khai kỹ thuật  
-*Các giai đoạn triển khai*  
-| Giai đoạn                        | Mô tả                                                                                      | Kết quả đạt được                         |
-|----------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------|
-| 1. Cấu hình hạ tầng AWS          | Triển khai Route 53, WAF, S3, Lambda, API Gateway, Cognito, Docker DB.                     | Hạ tầng cơ bản sẵn sàng.                 |
-| 2. CI/CD Pipeline                | Thiết lập CodeCommit + CodeBuild + CodeDeploy cho Java backend và Lambda.                  | Tự động hóa triển khai backend.          |
-| 3. Xây dựng Lambda Functions (Java) | Tạo các Lambda cho Upload, Auth, AI Pipeline, Save Result.                                 | Hoàn thiện backend serverless.           |
-| 4. AI Pipeline                   | Kết nối SageMaker (pose estimation model) và Bedrock (LLM feedback).                       | AI hoạt động trơn tru, phản hồi tự động. |
-| 5. Triển khai Web App            | Build web → Deploy lên S3 + CloudFront.                                                    | Giao diện người dùng hoạt động online.   |
-| 6. Giám sát & Tối ưu chi phí     | Dùng CloudWatch + Cost Explorer theo dõi hoạt động.                                        | Hệ thống ổn định, chi phí thấp.          |
+Data & AI Layer:
+
+RDS MySQL lưu dữ liệu cấu trúc: tài khoản, lịch sử bài tập, FitPoints, leaderboard.
+
+S3 lưu trữ video/ảnh thô và kết quả phân tích.
+
+SQS + Step Functions điều phối pipeline AI.
+
+Bedrock sinh phản hồi thông minh cho từng phiên luyện tập.
+
+### 4. Triển khai kỹ thuật
+**Các giai đoạn triển khai**
+
+| Giai đoạn | Mô tả | Kết quả đạt được |
+|---|---|---|
+| 1. Cấu hình hạ tầng AWS | Triển khai VPC, Private Subnet, Route 53, WAF, S3, API Gateway, Lambda, Cognito, RDS MySQL, các VPC Endpoint (S3, Bedrock). | Hạ tầng cơ bản sẵn sàng, bảo mật và tách biệt mạng. |
+| 2. CI/CD Pipeline | Thiết lập CodeCommit + CodeBuild + CodeDeploy + CodePipeline cho backend Java và Lambda, build & deploy web lên S3/CloudFront. | Tự động hóa triển khai backend và frontend. |
+| 3. Xây dựng Lambda Functions (Java) | Tạo các Lambda cho Auth, Upload, AI Pipeline, Save Result; kết nối RDS MySQL và S3. | Hoàn thiện backend serverless. |
+| 4. AI Pipeline | Kết nối SQS, Step Functions, Bedrock; xây dựng workflow: nhận nhiệm vụ → phân tích dữ liệu → chấm điểm → sinh phản hồi AI. | AI hoạt động trơn tru, phản hồi tự động cho người dùng. |
+| 5. Triển khai Web App | Build web app → Deploy lên S3 + CloudFront → cấu hình domain với Route 53. | Giao diện người dùng hoạt động online ổn định. |
+| 6. Giám sát & Tối ưu chi phí | Dùng CloudWatch + Cost Explorer để theo dõi log, hiệu suất, chi phí; tinh chỉnh cấu hình Lambda, RDS, CloudFront. | Hệ thống ổn định, chi phí thấp và được giám sát chặt chẽ. |
 
 
-### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: Thiết kế kiến trúc chi tiết, thử nghiệm mô hình AI cơ bản.  
-- *Thực tập (Tháng 1–3)*:  
-    - Tháng 1: Thiết lập hạ tầng, cấu hình Docker DB, Cognito, API Gateway, Lambda.  
-    - Tháng 2: Phát triển, hoàn thiện Java backend, xây dựng AI pipeline với SageMaker & Bedrock.
-    - Tháng 3: Kiểm thử & Demo	Kiểm thử hiệu suất, chạy thử với 10–20 người dùng, chuẩn bị demo cuối kỳ. 
-- *Sau triển khai*: Nghiên cứu thêm trong vòng 1 năm.  
+### 5. Lộ trình & Mốc triển khai
+**Trước thực tập (Tháng 0):**
 
-### 6. Ước tính ngân sách  
-Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01)  
-Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.pdf).  
+Thiết kế kiến trúc chi tiết dựa trên sơ đồ mới.
 
-*Chi phí hạ tầng*
-- Dịch vụ AWS:   
-    - Amazon API Gateway: 0,38 USD / tháng (300 requests/tháng, 1 KB/request)
-    - Amazon Bedrock: 0,32 USD / tháng (1 req/min, 350 input tokens, 70 output tokens)
-    - Amazon CloudFront: 1,20 USD / tháng (5 GB transfer, 500 000 HTTPS requests)
-    - Amazon CloudWatch: 1,85 USD / tháng (5 metrics, 0,5 GB logs)
-    - Amazon Cognito: 0,00 USD / tháng (100 MAU, Advanced Security enabled)
-    - Amazon Route 53: 0,51 USD / tháng (1 hosted zone)
-    - Amazon SageMaker: 0,02 USD / tháng (1 request/tháng, 0.2 GB in/out, 500 ms/request)
-    - Amazon S3: 0,04 USD / tháng (1 GB storage, 1000 PUT/POST/LIST, 20 000 GET)
-    - Amazon SES: 0,30 USD / tháng (3000 emails from EC2)
-    - Amazon Simple Queue Service (SQS): 0,00 USD / tháng (0,005 triệu requests/tháng)
-    - AWS Lambda: 0,00 USD / tháng (300 000 requests/tháng, 512 MB ephemeral storage)
-    - AWS Step Functions: 0,00 USD / tháng (500 workflows, 5 state transitions/workflow)
-    - AWS Web Application Firewall (WAF): 6,12 USD / tháng (1 Web ACL, 1 rule)
+Thử nghiệm pipeline AI đơn giản với Bedrock (text feedback).
 
-*Tổng*: 10,74 USD / tháng; 128,88 USD / 12 tháng
+**Thực tập (Tháng 1–3):**
 
-### 7. Đánh giá rủi ro  
-*Ma trận rủi ro*  
-- Kỹ thuật: AI nhận diện sai động tác hoặc lỗi xử lý dữ liệu ảnh/video.
-- Người dùng: Không duy trì thói quen luyện tập, không giữ chân được người dùng.
-- Thị trường & Đối tác: Khó mở rộng mạng lưới đối tác thưởng và thương hiệu đồng hành.
+Tháng 1:
 
-*Chiến lược giảm thiểu*  
-- Tối ưu mô hình AI qua huấn luyện liên tục và định kỳ. Ngoài ra có thể xin phép được sử dụng video của người dùng để cải thiện hiệu suất mô hình.
-- Triển khai gamification sâu hơn (chuỗi streak, nhóm bạn, phần thưởng hấp dẫn).
-- Tìm hiểu kỹ các đối tác và trình bày rõ giá trị hợp tác để có thể thiết lập hợp đồng lâu dài.
+Thiết lập hạ tầng: VPC, Subnet, RDS MySQL, Cognito, API Gateway, Lambda, S3, CloudFront.
 
-*Kế hoạch dự phòng*  
-- Khi AI gặp lỗi → thêm hệ thống fallback để dùng các phiên bản mô hình khác nhau.
-- Khi lượng người dùng giảm → tung thử thách cộng đồng theo mùa, thêm vouchers vào các dịp đặc biệt (Lễ, Tết, Hè,...).
-- Khi đối tác thương mại rút lui → duy trì cơ chế FitPoints nội bộ đổi quà nhỏ để đi tìm đối tác thay thế.
+Cấu hình CI/CD (CodeCommit, CodeBuild, CodeDeploy, CodePipeline).
 
-### 8. Kết quả kỳ vọng  
-*Cải tiến kỹ thuật*: 
-- Hoàn thiện hệ thống AI nhận diện động tác có độ chính xác >90%.
-- Ứng dụng ổn định, đáp ứng 10.000 người dùng hoạt động đồng thời.
-- Tối ưu kiến trúc serverless giúp chi phí hạ tầng duy trì dưới 1 USD/tháng trong giai đoạn MVP.
+Tháng 2:
 
-*Giá trị dài hạn*: 
-- Xây dựng cộng đồng người Việt yêu thích thể thao và sức khỏe bền vững.
+Phát triển Java backend, Lambda functions.
 
+Xây dựng AI pipeline với SQS, Step Functions, Bedrock.
+
+Tháng 3:
+
+Tích hợp frontend với backend.
+
+Kiểm thử hiệu suất, chạy thử với 10–20 người dùng, chuẩn bị demo cuối kỳ.
+
+**Sau triển khai:**
+
+Tiếp tục tối ưu mô hình AI, bổ sung tính năng gamification trong vòng 1 năm.
+
+### 6. Ước tính ngân sách
+Có thể xem chi phí trên AWS Pricing Calculator hoặc tải tệp ước tính ngân sách đính kèm.
+
+**Chi phí hạ tầng (ước tính giai đoạn MVP)**
+
+- Dịch vụ AWS:
+    - Amazon API Gateway: 0,38 USD / tháng (≈300 requests/tháng, 1 KB/request).
+    - Amazon Bedrock: 0,32 USD / tháng (1 req/phút, 350 input tokens, 70 output tokens).
+    - Amazon CloudFront: 1,20 USD / tháng (5 GB transfer, 500 000 HTTPS requests).
+    - Amazon CloudWatch: 1,85 USD / tháng (5 metrics, 0,5 GB logs).
+    - Amazon Cognito: 0,00 USD / tháng (≤100 MAU).
+    - Amazon Route 53: 0,51 USD / tháng (1 hosted zone).
+    - Amazon S3: 0,04 USD / tháng (1 GB storage, 1000 PUT/POST/LIST, 20 000 GET).
+    - Amazon SES: 0,30 USD / tháng (3 000 emails from EC2/Lambda).
+    - Amazon Simple Queue Service (SQS): ≈0,00 USD / tháng (0,005 triệu requests/tháng).
+    - AWS Lambda: 0,00 USD / tháng (≈300 000 requests/tháng, 512 MB ephemeral storage).
+    - AWS Step Functions: 0,00 USD / tháng (500 workflows, 5 state transitions/workflow).
+    - AWS Web Application Firewall (WAF): 6,12 USD / tháng (1 Web ACL, 1 rule).
+    - Amazon RDS MySQL (chế độ auto-stop): 0–3 USD / tháng (tùy thời gian hoạt động).
+
+**Tổng:** khoảng 10,7 – 12 USD / tháng tùy mức sử dụng RDS; tương đương 128 – 144 USD / 12 tháng.
+
+### 7. Đánh giá rủi ro
+**Ma trận rủi ro**
+
+- Kỹ thuật: AI nhận diện sai động tác hoặc lỗi xử lý dữ liệu ảnh/video; cấu hình VPC/Endpoint sai gây gián đoạn dịch vụ.
+- Người dùng: Không duy trì thói quen luyện tập, tỷ lệ quay lại thấp.
+- Thị trường & Đối tác: Khó mở rộng mạng lưới đối tác thưởng và thương hiệu đồng hành; thay đổi chính sách từ đối tác.
+- Chi phí: Tăng chi phí bất ngờ khi lượng người dùng tăng đột biến (CloudFront, Bedrock).
+
+**Chiến lược giảm thiểu**
+
+- Tối ưu mô hình AI qua huấn luyện liên tục, theo dõi chất lượng qua log; thêm bước kiểm tra cơ bản trước khi chấm điểm.
+- Triển khai gamification sâu hơn (chuỗi streak, nhóm bạn, thử thách theo mùa, phần thưởng hấp dẫn).
+- Chuẩn bị đề xuất giá trị rõ ràng cho đối tác, đa dạng hóa nhóm đối tác (thể thao, đồ ăn healthy, giải trí).
+- Thiết lập AWS Budget + Alarm cho từng dịch vụ (CloudFront, Bedrock, Lambda, RDS).
+
+**Kế hoạch dự phòng**
+
+- Khi AI gặp lỗi → sử dụng fallback logic (chấm điểm đơn giản dựa trên thời gian/rep) và thông báo rõ cho người dùng.
+- Khi lượng người dùng giảm → tung thử thách cộng đồng theo mùa, kết hợp chiến dịch social media.
+- Khi đối tác thương mại rút lui → duy trì cơ chế FitPoints nội bộ đổi quà nhỏ (voucher nội bộ, huy hiệu trong app) trong khi tìm đối tác mới.
+
+### 8. Kết quả kỳ vọng
+**Cải tiến kỹ thuật:**
+
+- Hoàn thiện hệ thống AI nhận diện động tác có độ chính xác > 90%.
+- Ứng dụng ổn định, đáp ứng tới 10.000 người dùng hoạt động đồng thời trên kiến trúc serverless.
+- Tối ưu kiến trúc giúp chi phí hạ tầng duy trì khoảng 10–12 USD/tháng ở giai đoạn đầu.
+
+**Giá trị dài hạn:**
+
+- Xây dựng cộng đồng người Việt yêu thích thể thao và sức khỏe bền vững, gắn kết qua các thử thách online.
 - Trở thành nền tảng tiên phong “AI + Fitness + Gamification” tại Việt Nam.
+- Tạo nền tảng dữ liệu luyện tập để mở rộng sang các bài toán phân tích sức khỏe, gợi ý chương trình tập cá nhân hóa và các dự án AI trong tương lai.
 
