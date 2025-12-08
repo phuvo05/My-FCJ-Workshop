@@ -1,54 +1,77 @@
----
-title: "Week 11 - DevOps & Automation"
+﻿---
+title: "Week 11 - Lambda Managed Instances & AWS re:Invent Learnings"
 weight: 11
 chapter: false
 pre: "<b> 1.11. </b>"
 ---
 
+**Week:** 2025-11-17 to 2025-11-21  
+**Status:** "Planned"  
 
+---
 
-### Week 11 Objectives:
+## Week 11 Overview
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+Content from AWS re:Invent 2025 (session CNS382) on Lambda Managed Instances (LMI): running Lambda functions on EC2 capacity with full serverless programming model, better control over compute, and reuse of EC2 pricing models. Focus on when to choose LMI vs. default Lambda, how to configure capacity providers, and how testing/ops practices change for predictable high-traffic workloads.
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Key Topics
 
+#### Why Lambda Managed Instances
+- Keep Lambda dev experience while choosing EC2 instance families and pricing constructs
+- Eliminate cold starts; support multi-concurrency per instance
+- Apply EC2 Savings Plans/Reserved Instances; predictability for steady traffic
 
-### Week 11 Achievements:
+#### Architecture & Setup
+- Capacity Provider: VPC config, instance types (C/M/R families, x86/Graviton), scaling guardrails
+- Steps: create capacity provider -> create function bound to provider -> publish version to launch instances
+- LMI-managed lifecycle: AWS patches OS/runtime, handles routing/auto scaling; instances visible but immutable
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Networking & Security
+- All egress via instance ENI in provider VPC; function-level VPC config disabled
+- Close inbound SG rules; ensure paths to dependencies/CloudWatch (Internet or PrivateLink)
+- EBS encryption (service key or custom KMS)
 
-* Successfully created and configured an AWS Free Tier account.
+#### Function Features & Scaling
+- Supports ZIP/OCI packaging; Java/Python/Node/.NET runtimes; layers, extensions, function URLs, response streaming, durable functions
+- Memory/CPU settings influence instance choice; optional overrides for allowed/excluded instance types
+- Instance-level scaling guardrails (e.g., max vCPU) to control cost
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+#### Workload Fit & Trade-offs
+- Use LMI for high-traffic steady workloads, specialized compute/memory/network needs
+- Keep default Lambda for spiky/short, unpredictable invocations
+- Multi-concurrency and EC2 billing change cost/perf envelope
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+### Learning Objectives
 
-* Used AWS CLI to perform basic operations such as:
+- Explain when to prefer LMI vs. default Lambda for serverless apps
+- Configure capacity providers with VPC, role, and instance constraints
+- Describe LMI networking model and logging path
+- Map Lambda features (packaging, runtimes, URLs, streaming, durable) to LMI
+- Set scaling/cost guardrails and choose instance families for workload shapes
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
+---
 
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+## Daily Breakdown
+
+| Day | Focus | Topics |
+|-----|-------|--------|
+| 51 | LMI Overview & Use Cases | Why LMI, benefits, EC2 pricing reuse, when not to use it |
+| 52 | Capacity Provider Setup | VPC config, IAM operator role, instance families, KMS, guardrails |
+| 53 | Functions on LMI | Packaging/runtime support, memory/CPU mapping, multi-concurrency, publishing versions |
+| 54 | Networking & Observability | Egress paths, CloudWatch access, security groups, logging, monitoring notes |
+| 55 | Scaling & Ops Playbook | Max vCPU, steady traffic planning, cost controls, rollout checklist |
+
+---
+
+## Prerequisites
+
+- Familiarity with Lambda programming model and transformer material from prior weeks
+- Basic EC2/VPC, IAM roles/policies, and CloudWatch logging
+- Understanding of Savings Plans/Reserved Instances for EC2
+
+## Next Steps
+
+- Draft a capacity provider for your target workload (VPC, instance shortlist, guardrails)
+- Plan benchmarks comparing LMI vs. default Lambda on representative traffic
+- Map monitoring and logging paths (CloudWatch endpoints, PrivateLink if needed)
+- Decide pricing instruments (SP/RI) and multi-concurrency targets per function

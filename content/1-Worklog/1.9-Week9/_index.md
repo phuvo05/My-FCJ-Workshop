@@ -1,54 +1,83 @@
 ---
-title: "Week 9 - Advanced AWS Services"
+title: "Week 9 - Transformer Architecture & Implementation"
 weight: 9
 chapter: false
 pre: "<b> 1.9. </b>"
 ---
 
+**Week:** 2025-11-03 to 2025-11-07  
+**Status:** "Done"  
 
+---
 
-### Week 9 Objectives:
+## Week 9 Overview
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+This week explores the **Transformer** architecture, a revolutionary model that replaced RNNs in NLP. We'll understand why transformers are needed, how they work internally, and implement them from scratch. From attention mechanisms to the full encoder-decoder design, this week bridges theory and practical implementation.
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Key Topics
 
+#### RNN Limitations & Transformer Introduction
+- Sequential processing bottlenecks in RNNs
+- Vanishing gradient problems
+- Information bottleneck with long sequences
+- Why attention is all you need
 
-### Week 9 Achievements:
+#### Transformer Architecture
+- Encoder-decoder structure
+- Multi-head attention layers
+- Positional encoding
+- Residual connections & layer normalization
+- Feed-forward networks
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Attention Mechanisms
+- Scale dot-product attention (core mechanism)
+- Self-attention (same sentence)
+- Masked attention (decoder)
+- Encoder-decoder attention
+- Multi-head attention for parallel computation
 
-* Successfully created and configured an AWS Free Tier account.
+#### Transformer Decoder & GPT2
+- Positional embeddings
+- Decoder block implementation
+- Feed-forward layer design
+- Output probability calculation
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+#### Applications & Models
+- GPT-2 (Generative Pre-trained Transformer)
+- BERT (Bidirectional Encoder Representations)
+- T5 (Text-to-Text Transfer Transformer)
+- Applications: Translation, Classification, QA, Summarization, Sentiment Analysis
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+### Learning Objectives
 
-* Used AWS CLI to perform basic operations such as:
+- ✅ Understand RNN limitations and why transformers solve them
+- ✅ Grasp the complete transformer architecture
+- ✅ Implement attention mechanisms from scratch
+- ✅ Build a transformer decoder (GPT2-style)
+- ✅ Recognize transformer applications and state-of-the-art models
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
+---
 
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+## Daily Breakdown
+
+| Day | Focus | Topics |
+|-----|-------|--------|
+| 41 | RNN Problems | Sequential processing, Vanishing gradients, Information bottleneck |
+| 42 | Architecture Overview | Encoder-decoder, Multi-head attention, Positional encoding |
+| 43 | Attention Core | Scale dot-product attention formula, Matrix operations, GPU efficiency |
+| 44 | Attention Types | Self-attention, Masked attention, Encoder-decoder attention |
+| 45 | Decoder Implementation | GPT2 architecture, Building blocks, Code walkthrough |
+
+---
+
+## Prerequisites
+
+- Deep understanding of RNNs, LSTMs, and attention from Week 8
+- Comfortable with matrix operations and linear algebra
+- PyTorch or TensorFlow knowledge helpful
+
+## Next Steps
+
+- Study the paper "Attention is All You Need" (Vaswani et al., 2017)
+- Implement transformer components incrementally
+- Experiment with pre-trained models (BERT, GPT-2, T5)

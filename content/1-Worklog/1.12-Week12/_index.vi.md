@@ -1,55 +1,67 @@
----
-title: "Worklog Tuần 12"
-weight: 2
+﻿---
+title: "Tuần 12 - Thông báo AWS re:Invent 2025"
+weight: 12
 chapter: false
-pre: " <b> 1.12 </b> "
+pre: "<b> 1.12. </b>"
 ---
 
+**Tuần:** 2025-11-24 đến 2025-11-28  
+**Trạng thái:** "Kế hoạch"  
 
-### Mục tiêu tuần 12:
+---
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+## Tổng quan Tuần 12
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+Tóm tắt re:Invent 2025: dòng Nova mới (speech-to-speech, đa phương thức, reasoning giá rẻ), Bedrock mở rộng (model open-weight, reinforcement fine-tuning), vector/AI hạ tầng (S3 Vectors GA), và phần cứng compute mới như Graviton5, Trainium3 UltraServers. Trọng tâm là lập kế hoạch áp dụng thực tế.
 
+### Chủ đề chính
 
-### Kết quả đạt được tuần 12:
+#### GenAI & Model
+- Nova 2: Sonic (speech-to-speech), Lite (nhanh/rẻ), Omni (đa phương thức), Forge để huấn luyện frontier model tùy biến
+- Nova Act cho agent UI ổn định; Bedrock AgentCore thêm policy/quality cho agent
+- Bedrock bổ sung model open-weight (Mistral Large 3, Ministral 3) và reinforcement fine-tuning
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Vector & Dữ liệu
+- Amazon S3 Vectors GA: tới 2B vector/index, ~100ms truy vấn, chi phí thấp hơn DB chuyên dụng
+- Clean Rooms sinh dữ liệu tổng hợp bảo vệ riêng tư cho ML cộng tác
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+#### Nền tảng AI Dev
+- SageMaker AI với serverless MLflow; training checkpointless và elastic trên HyperPod
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+#### Compute & Hardware
+- Graviton5 CPU giá/hiệu năng tốt hơn trên EC2
+- Trainium3 UltraServers (3nm) cho train/inference nhanh và rẻ hơn
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
+### Mục tiêu học tập
 
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
+- Xác định launch AI/compute nào tác động tới workload hiện tại
+- Lên pilot cho Nova và tính năng Bedrock mới
+- Phác lộ trình chuyển sang S3 Vectors cho lưu trữ/search vector
+- Đánh giá phù hợp Graviton5/Trainium3 cho mục tiêu cost/perf
 
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
+---
 
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
+## Lịch trong tuần
 
+| Ngày | Trọng tâm | Chủ đề |
+|-----|-----------|--------|
+| 56 | Model mới | Nova 2 (Sonic, Lite, Omni), Forge, Nova Act |
+| 57 | Bedrock & Agent | Model open-weight, reinforcement fine-tuning, AgentCore policy/quality |
+| 58 | Vector & dữ liệu | S3 Vectors GA, Clean Rooms synthetic, kế hoạch scale/chi phí |
+| 59 | SageMaker | Serverless MLflow, checkpointless & elastic training trên HyperPod |
+| 60 | Compute mới | Graviton5, Trainium3 UltraServers, checklist fit/migration |
 
+---
+
+## Yêu cầu nền tảng
+
+- Hiểu catalog Bedrock và khả năng agent
+- Nắm kiến trúc vector search cơ bản
+- Biết các họ EC2 và lựa chọn accelerator
+
+## Bước tiếp theo
+
+- Chọn 1 pilot cho Nova (speech/đa phương thức/reasoning) và lập kế hoạch đánh giá
+- Lập POC chuyển sang S3 Vectors so với vector store hiện tại
+- Đặt mục tiêu benchmark cho Graviton5/Trainium3 so với máy đang dùng
+- Xác định yêu cầu governance/policy trước khi dùng AgentCore và Nova Act

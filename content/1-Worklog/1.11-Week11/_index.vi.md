@@ -1,56 +1,77 @@
----
-title: "Worklog Tuần 11"
-weight: 2
+﻿---
+title: "Tuần 11 - Lambda Managed Instances & ghi chú re:Invent"
+weight: 11
 chapter: false
-pre: " <b> 1.11. </b> "
+pre: "<b> 1.11. </b>"
 ---
 
+**Tuần:** 2025-11-17 đến 2025-11-21  
+**Trạng thái:** "Kế hoạch"  
 
+---
 
-### Mục tiêu tuần 11:
+## Tổng quan Tuần 11
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+Tóm tắt session AWS re:Invent 2025 (CNS382) về Lambda Managed Instances (LMI): chạy hàm Lambda trên EC2 do Lambda quản lý, giữ nguyên trải nghiệm serverless nhưng chọn được loại máy, giá EC2, và loại bỏ cold start. Trọng tâm: khi nào chọn LMI vs. Lambda mặc định, cách cấu hình capacity provider, và lưu ý test/ops cho workload lưu lượng ổn định.
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Chủ đề chính
 
+#### Vì sao LMI
+- Giữ trải nghiệm Lambda nhưng tự chọn họ máy EC2 và tận dụng Savings Plan/Reserved Instance
+- Không cold start, hỗ trợ multi-concurrency trên instance
+- Dễ dự báo chi phí với traffic ổn định
 
-### Kết quả đạt được tuần 11:
+#### Kiến trúc & Thiết lập
+- Capacity Provider: cấu hình VPC, loại máy (C/M/R, x86/Graviton), guardrail scaling
+- Quy trình: tạo capacity provider -> tạo function gắn provider -> publish version để khởi tạo instance
+- Vòng đời do Lambda quản lý: patch OS/runtime, routing/auto scaling; thấy instance nhưng không can thiệp được
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Mạng & Bảo mật
+- Toàn bộ egress đi qua ENI của instance trong VPC provider; không cấu hình VPC ở mức function
+- Đóng inbound SG; đảm bảo đường ra tới dependency/CloudWatch (Internet hoặc PrivateLink)
+- Mặc định mã hóa EBS, có thể dùng KMS của bạn
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+#### Tính năng hàm & Scaling
+- Hỗ trợ ZIP/OCI; runtime Java/Python/Node/.NET; layers, extensions, function URL, response streaming, durable functions
+- Memory/CPU quyết định chọn instance; có thể giới hạn/loại trừ loại máy
+- Guardrail scaling ở mức instance (vd max vCPU) để kiểm soát chi phí
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+#### Phù hợp & Đánh đổi
+- Dùng LMI cho workload lưu lượng cao, ổn định, hoặc cần compute/memory/network đặc thù
+- Giữ Lambda mặc định cho traffic đột biến, ngắn
+- Multi-concurrency + billing kiểu EC2 thay đổi bức tranh cost/perf
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
+### Mục tiêu học tập
 
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
+- Nêu khi nào chọn LMI thay vì Lambda mặc định
+- Cấu hình capacity provider (VPC, role, loại máy, guardrail)
+- Mô tả mô hình mạng và đường log của LMI
+- Ghép tính năng Lambda (đóng gói, runtime, URL, streaming, durable) với LMI
+- Đặt giới hạn scale/chi phí và chọn họ máy phù hợp workload
 
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
+---
 
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
+## Lịch trong tuần
 
+| Ngày | Trọng tâm | Chủ đề |
+|-----|-----------|--------|
+| 51 | Tổng quan & use case | Lợi ích LMI, tận dụng giá EC2, khi nào không dùng |
+| 52 | Capacity Provider | VPC, IAM operator role, shortlist loại máy, KMS, guardrail |
+| 53 | Hàm trên LMI | Đóng gói/runtime, ánh xạ memory/CPU, multi-concurrency, publish version |
+| 54 | Mạng & quan sát | Đường egress, CloudWatch, SG, logging, monitoring |
+| 55 | Scaling & vận hành | Max vCPU, kế hoạch traffic ổn định, kiểm soát chi phí, checklist rollout |
 
+---
+
+## Yêu cầu nền tảng
+
+- Nắm trải nghiệm Lambda và transformer từ tuần trước
+- Kiến thức cơ bản EC2/VPC, IAM, CloudWatch
+- Hiểu Savings Plan/Reserved Instance cho EC2
+
+## Bước tiếp theo
+
+- Phác capacity provider cho workload mục tiêu (VPC, shortlist instance, guardrail)
+- Lập kế hoạch benchmark LMI vs. Lambda mặc định theo traffic mẫu
+- Vẽ đường giám sát/log (CloudWatch endpoint, PrivateLink nếu cần)
+- Quyết định dùng SP/RI và mục tiêu multi-concurrency cho từng hàm

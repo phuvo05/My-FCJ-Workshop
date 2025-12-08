@@ -1,55 +1,80 @@
----
-title: "Worklog Tuần 10"
-weight: 2
+﻿---
+title: "Tuần 10 - Transfer Learning, BERT & T5"
+weight: 10
 chapter: false
-pre: " <b> 1.10. </b> "
+pre: "<b> 1.10. </b>"
 ---
 
+**Tuần:** 2025-11-10 đến 2025-11-14  
+**Trạng thái:** "Đang thực hiện"  
 
-### Mục tiêu tuần 10:
+---
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+## Tổng quan Tuần 10
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+Tuần này tập trung vào transfer learning cho NLP và cách QA hiện đại tận dụng transformer tiền huấn luyện. Ta so sánh huấn luyện truyền thống với reuse đặc trưng và fine-tuning, rồi đi vào hai mô hình tiêu biểu: BERT (ngữ cảnh hai chiều) và T5 (text-to-text đa nhiệm), kèm cách thiết lập QA có ngữ cảnh vs. closed-book.
 
+### Chủ đề chính
 
-### Kết quả đạt được tuần 10:
+#### Nền tảng Transfer Learning
+- Pipeline truyền thống vs. pipeline transfer
+- Tái dùng trọng số tiền huấn luyện để hội tụ nhanh hơn
+- So sánh feature-based với fine-tuning
+- Lợi ích: nhanh hơn, chính xác hơn, ít dữ liệu nhãn
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Hai chế độ Question Answering
+- QA có ngữ cảnh (trích span/sinh ngắn dựa vào đoạn văn)
+- QA closed-book (sinh câu trả lời không có context)
+- Ảnh hưởng của chất lượng tiền huấn luyện lên QA
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+#### BERT và ngữ cảnh hai chiều
+- Masked Language Modeling cho embedding ngữ cảnh
+- Next Sentence Prediction cho coherence mức câu
+- Dùng cả trái và phải để dự đoán token
+- Ứng dụng: QA, sentiment, phân loại
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+#### T5 đa nhiệm text-to-text
+- Định dạng text-to-text cho nhiều tác vụ
+- Prompt chung cho rating, QA, tóm tắt, dịch
+- Mở rộng dữ liệu (C4 so với Wikipedia)
+- Chuyển giao đa nhiệm để tổng quát hóa tốt hơn
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
+#### Chiến lược dữ liệu & huấn luyện
+- Pha trộn dữ liệu có nhãn/không nhãn; self-supervised masking
+- Đóng băng backbone vs. thêm head
+- Công thức fine-tuning cho QA/tóm tắt/dịch
 
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
+### Mục tiêu học tập
 
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
+- Giải thích khi nào nên dùng transfer thay vì huấn luyện từ đầu
+- Phân biệt reuse đặc trưng và fine-tuning toàn bộ
+- So sánh QA có ngữ cảnh và QA closed-book
+- Tóm lược cách BERT và T5 tiền huấn luyện và chuyển giao
+- Nêu vì sao transfer giúp giảm dữ liệu nhãn và thời gian train
 
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
+---
 
+## Lịch trong tuần
 
+| Ngày | Trọng tâm | Chủ đề |
+|-----|-----------|--------|
+| 46 | Giới thiệu Transfer | Pipeline truyền thống vs. transfer, reuse trọng số, feature-based vs. fine-tuning, lợi ích |
+| 47 | Question Answering | QA có ngữ cảnh vs. closed-book, nhu cầu dữ liệu, cách đánh giá |
+| 48 | BERT hai chiều | Masked LM, NSP, tận dụng ngữ cảnh hai phía cho dự đoán token |
+| 49 | Mô hình T5 | Prompt text-to-text, chia sẻ đa nhiệm, mở rộng dữ liệu (C4 vs. Wikipedia) |
+| 50 | Thực hành fine-tuning | Đóng băng/lộ trình unfreeze, downstream: QA, tóm tắt, dịch |
+
+---
+
+## Yêu cầu nền tảng
+
+- Nắm vững kiến trúc transformer từ Tuần 9
+- Thoải mái với attention và luồng encoder-decoder
+- Cơ bản PyTorch/TensorFlow để fine-tune
+
+## Bước tiếp theo
+
+- Đọc paper BERT và T5 để hiểu mục tiêu pre-train
+- Fine-tune thử model BERT QA (kiểu SQuAD span)
+- Thử prompt T5 cho QA, tóm tắt, sentiment
+- So sánh hiệu năng feature-based vs. fine-tune trên dữ liệu của bạn

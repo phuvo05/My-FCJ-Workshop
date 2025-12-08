@@ -1,53 +1,80 @@
----
-title: "Week 10 - Serverless & Containers"
+﻿---
+title: "Week 10 - Transfer Learning, BERT & T5"
 weight: 10
 chapter: false
 pre: "<b> 1.10. </b>"
 ---
 
+**Week:** 2025-11-10 to 2025-11-14  
+**Status:** "In progress"  
 
-### Week 10 Objectives:
+---
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 10 Overview
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+This week dives into transfer learning for NLP and how modern QA systems benefit from pre-trained transformers. We will contrast classical training with feature-based reuse and fine-tuning, then study two flagship models: BERT for bidirectional context and T5 for text-to-text multitask learning, along with practical QA setups (context-based vs. closed-book).
 
+### Key Topics
 
-### Week 10 Achievements:
+#### Transfer Learning Fundamentals
+- Classical vs. transfer learning pipelines
+- Reusing pre-trained weights to speed convergence
+- Feature-based representations vs. fine-tuning
+- Benefits: faster training, better predictions, less labeled data
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Question Answering Modes
+- Context-based QA (span extraction with provided context)
+- Closed-book QA (generate answers without context)
+- How pre-training quality shapes QA performance
 
-* Successfully created and configured an AWS Free Tier account.
+#### BERT Bidirectional Context
+- Masked language modeling for contextual embeddings
+- Next sentence prediction for sentence-level coherence
+- Using both left and right context to predict tokens
+- Typical downstream uses: QA, sentiment, classification
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+#### T5 Text-to-Text Multitask
+- Unified text-to-text framing for multiple tasks
+- Prompting the same model for rating, QA, summarization, translation
+- Scaling with large corpora (e.g., C4 vs. Wikipedia)
+- Multitask transfer to improve generalization
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+#### Training & Data Strategy
+- Labeled vs. unlabeled data mix; self-supervised masking
+- Freezing backbone vs. adding task heads
+- Fine-tuning recipes for downstream tasks (QA, summarization, translation)
 
-* Used AWS CLI to perform basic operations such as:
+### Learning Objectives
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
+- ✅ Explain transfer learning and when to prefer it over training from scratch
+- ✅ Distinguish feature-based reuse from full fine-tuning
+- ✅ Compare context-based QA and closed-book QA setups
+- ✅ Summarize how BERT and T5 pre-train and transfer across tasks
+- ✅ Identify why transfer learning reduces data needs and training time
 
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---
+
+## Daily Breakdown
+
+| Day | Focus | Topics |
+|-----|-------|--------|
+| 46 | Transfer Learning Intro | Classical vs. transfer pipeline, reuse weights, feature-based vs. fine-tuning, benefits |
+| 47 | Question Answering | Context-based span QA vs. closed-book QA, data needs, evaluation cues |
+| 48 | BERT Bidirectionality | Masked LM, next sentence prediction, leveraging both contexts for token prediction |
+| 49 | T5 Multitask Model | Text-to-text prompts, multitask sharing, scaling data (C4 vs. Wikipedia) |
+| 50 | Fine-tuning Practice | Freezing layers vs. adding heads, downstream tasks: QA, summarization, translation |
+
+---
+
+## Prerequisites
+
+- Solid grasp of transformer architecture from Week 9
+- Comfortable with attention mechanisms and encoder-decoder flow
+- Basic familiarity with PyTorch or TensorFlow for fine-tuning
+
+## Next Steps
+
+- Read the BERT and T5 papers to internalize pre-training objectives
+- Fine-tune a pre-trained BERT QA model (e.g., SQuAD-style span extraction)
+- Experiment with T5 prompts for QA, summarization, and sentiment tasks
+- Compare feature-based vs. fine-tuned performance on your own dataset

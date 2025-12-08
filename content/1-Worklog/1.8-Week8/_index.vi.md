@@ -1,56 +1,51 @@
 ---
-title: "Worklog Tuần 8"
-weight: 1
+title: "Tuần 8 - Xử Lý Ngôn Ngữ Tự Nhiên & Deep Learning"
+weight: 8
 chapter: false
-pre: " <b> 1.8. </b> "
+pre: "<b> 1.8. </b>"
 ---
 
+**Tuần:** 2025-10-27 to 2025-10-31  
+**Trạng Thái:** "Hoàn Thành"  
 
+---
 
-### Mục tiêu tuần 8:
+## Tổng Quan Tuần 8
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+Tuần này cung cấp cái nhìn sâu rộng về Xử Lý Ngôn Ngữ Tự Nhiên (NLP), bao gồm nền tảng ngôn ngữ học, ứng dụng NLP hiện đại, kiến trúc sequence-to-sequence, và phương pháp đánh giá. Từ hiểu biết về âm vị học đến triển khai hệ thống dịch máy, tuần này kết nối lý thuyết và thực hành trong NLP.
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Các Chủ Đề Chính
 
+#### Nền Tảng Ngôn Ngữ Học
+- Các thành phần cốt lõi: Âm Vị Học, Âm Vị Học, Hình Thái Học, Cú Pháp, Ngữ Nghĩa, Thực Dụng
+- Hiểu cấu trúc ngôn ngữ ảnh hưởng đến thiết kế NLP như thế nào
 
-### Kết quả đạt được tuần 8:
+#### Ứng Dụng NLP
+- Công cụ tìm kiếm và nhận dạng ý định
+- Quảng cáo trực tuyến với NER và trích xuất mối quan hệ
+- Trợ lý giọng nói và nhận dạng giọng nói
+- Chatbot với pipeline NLU/NLG
+- Hệ thống dịch máy
+- Tóm tắt văn bản (extractive & abstractive)
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+#### Kiến Trúc Deep Learning
+- Mô hình Seq2seq với kiến trúc encoder-decoder
+- LSTM chi tiết: forget gate, input gate, cell state, output gate
+- Cơ chế Attention và self-attention
+- Triển khai Neural Machine Translation (NMT)
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+#### Đánh Giá & Decoding
+- Điểm BLEU (dựa trên precision)
+- Điểm ROUGE (dựa trên recall)
+- Điểm F1 để đánh giá MT
+- Beam search decoding
+- Minimum Bayes Risk (MBR) sampling
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+### Phòng Thí Nghiệm Thực Hành
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+- Xây dựng workflow voicebot và chatbot
+- Triển khai LSTM cho sequence modeling
+- Tạo encoder-decoder với attention
+- Neural machine translation end-to-end
+- Đánh giá chất lượng dịch với BLEU/ROUGE
+- Triển khai beam search và MBR
