@@ -18,7 +18,7 @@ Vào **API Gateway Console** và chọn API:
 
 `bedrock-chatbot-api`
 
-![h4](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h4.png)
+![h4](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h4.png)
 
 ---
 
@@ -40,15 +40,15 @@ Nhấn **Create** để tạo route.
 1. Nhấn vào route vừa tạo `/chat`  
 2. Ở phần **Integration**, chọn **Attach integration**
 
-![h5](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h5.png)
+![h5](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h5.png)
 
 3. Chọn Create and attach an integration:
 
 - **Integration type**: Lambda function  
 - **Region**: Region bạn đang sử dụng  
 - **Lambda function**: `lambda-bedrock-function` (Tên lambda bạn mới tạo)
-![h6](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h6.png)
-![h7](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h7.png)
+![h6](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h6.png)
+![h7](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h7.png)
 
 Nhấn **Create**.
 

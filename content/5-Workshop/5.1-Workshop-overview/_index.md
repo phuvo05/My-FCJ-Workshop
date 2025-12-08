@@ -31,4 +31,4 @@ The high-level workflow of the system is as follows:
 
 The diagram below illustrates the overall architecture used in this workshop:
 
-![overview](/5-Workshop/5.1-Workshop-overview/diagram-bedrock.png)
+![overview](/images/5-Workshop/5.1-Workshop-overview/diagram-bedrock.png)

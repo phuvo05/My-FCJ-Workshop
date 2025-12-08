@@ -34,7 +34,7 @@ In this section, you will first **create a custom policy**, then **create a role
 
 1. Open **IAM Console → Policies → Create policy**
 
-![h1](/5-Workshop/5.2-Prerequisite/h1.png)
+![h1](/images/5-Workshop/5.2-Prerequisite/h1.png)
 
 ---
 
@@ -66,13 +66,13 @@ In this section, you will first **create a custom policy**, then **create a role
 }
 ```
 
-![h2](/5-Workshop/5.2-Prerequisite/h2.png)
+![h2](/images/5-Workshop/5.2-Prerequisite/h2.png)
 
 ---
 
 3. Click **Next**, give the policy a name (e.g., `lambda-bedrock`) and click **Create policy**.
 
-![h3](/5-Workshop/5.2-Prerequisite/h3.png)
+![h3](/images/5-Workshop/5.2-Prerequisite/h3.png)
 
 ---
 
@@ -80,7 +80,7 @@ In this section, you will first **create a custom policy**, then **create a role
 
 1. Go to **IAM Console → Roles → Create role**
 
-![hinh1](/5-Workshop/5.2-Prerequisite/hinh1.png)
+![hinh1](/images/5-Workshop/5.2-Prerequisite/hinh1.png)
 
 ---
 
@@ -89,13 +89,13 @@ In this section, you will first **create a custom policy**, then **create a role
 - **Trusted entity type**: AWS service  
 - **Use case**: Lambda  
 
-![hinh2](/5-Workshop/5.2-Prerequisite/hinh2.png)
+![hinh2](/images/5-Workshop/5.2-Prerequisite/hinh2.png)
 
 ---
 
 3. In “Add permissions”, search for the policy you created earlier (`lambda-bedrock`) and select it.
 
-![hinh3](/5-Workshop/5.2-Prerequisite/hinh3.png)
+![hinh3](/images/5-Workshop/5.2-Prerequisite/hinh3.png)
 
 ---
 
@@ -107,7 +107,7 @@ lambda-bedrock-role
 
 Then click **Create role**.
 
-![hinh4](/5-Workshop/5.2-Prerequisite/hinh4.png)
+![hinh4](/images/5-Workshop/5.2-Prerequisite/hinh4.png)
 
 ---
 
@@ -125,7 +125,7 @@ Before writing Lambda code to call the Converse API, test the model in the AWS C
 
 1. Open **Amazon Bedrock → Model catalog**
 
-![hinh5](/5-Workshop/5.2-Prerequisite/hinh5.png)
+![hinh5](/images/5-Workshop/5.2-Prerequisite/hinh5.png)
 
 ---
 
@@ -134,7 +134,7 @@ Before writing Lambda code to call the Converse API, test the model in the AWS C
 2. Pick a model such as **Claude 3.5 Sonnet**, **Llama 3.1**, or **Mistral 24.07**  
 3. Click **Open in playground**
 
-![hinh6](/5-Workshop/5.2-Prerequisite/hinh6.png)
+![hinh6](/images/5-Workshop/5.2-Prerequisite/hinh6.png)
 
 ---
 
@@ -151,7 +151,7 @@ If you want to confirm whether the selected model supports **Converse API**, fol
 1. Return to the model page in the catalog  
 2. Scroll down to **Code examples**
 
-![hinh7](/5-Workshop/5.2-Prerequisite/hinh7.png)
+![hinh7](/images/5-Workshop/5.2-Prerequisite/hinh7.png)
 
 3. AWS will open an example code page.
 
@@ -163,7 +163,7 @@ bedrock.converse(...)
 
 Like this:
 
-![hinh8](/5-Workshop/5.2-Prerequisite/hinh8.png)
+![hinh8](/images/5-Workshop/5.2-Prerequisite/hinh8.png)
 
 ---
 

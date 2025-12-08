@@ -18,7 +18,7 @@ Go to **API Gateway Console** and select the API:
 
 `bedrock-chatbot-api`
 
-![h4](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h4.png)
+![h4](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h4.png)
 
 ---
 
@@ -40,7 +40,7 @@ Click **Create** to add the route.
 1. Click the newly created `/chat` route  
 2. In the **Integration** section, choose **Attach integration**
 
-![h5](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h5.png)
+![h5](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h5.png)
 
 3. Select **Create and attach an integration**, then configure:
 
@@ -48,8 +48,8 @@ Click **Create** to add the route.
 - **Region**: The AWS region you are using  
 - **Lambda function**: `lambda-bedrock-function` (the Lambda you created earlier)
 
-![h6](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h6.png)
-![h7](/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h7.png)
+![h6](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h6.png)
+![h7](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.2-Integrate-Lambda/h7.png)
 
 Click **Create**.
 

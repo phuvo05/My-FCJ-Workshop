@@ -39,4 +39,4 @@ Luồng hoạt động:
 
 Sơ đồ kiến trúc workshop:
 
-![overview](/5-Workshop/5.1-Workshop-overview/diagram-bedrock.png)
+![overview](/images/5-Workshop/5.1-Workshop-overview/diagram-bedrock.png)

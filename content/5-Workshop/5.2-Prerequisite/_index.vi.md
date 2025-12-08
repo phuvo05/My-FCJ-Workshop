@@ -34,7 +34,7 @@ Trong phần này, bạn sẽ tạo **policy trước**, sau đó tạo **role**
 
 1. Mở **IAM Console → Policies → Create policy**
 
-![h1](/5-Workshop/5.2-Prerequisite/h1.png)
+![h1](/images/5-Workshop/5.2-Prerequisite/h1.png)
 
 ---
 
@@ -66,13 +66,13 @@ Trong phần này, bạn sẽ tạo **policy trước**, sau đó tạo **role**
 }
 ```
 
-![h2](/5-Workshop/5.2-Prerequisite/h2.png)
+![h2](/images/5-Workshop/5.2-Prerequisite/h2.png)
 
 ---
 
 3. Chọn **Next**, đặt tên cho policy mới (ví dụ: `lambda-bedrock`) và bấm **Create policy**
 
-![h3](/5-Workshop/5.2-Prerequisite/h3.png)
+![h3](/images/5-Workshop/5.2-Prerequisite/h3.png)
 
 ---
 
@@ -80,7 +80,7 @@ Trong phần này, bạn sẽ tạo **policy trước**, sau đó tạo **role**
 
 1. Quay lại **IAM Console → Roles → Create role**
 
-![hinh1](/5-Workshop/5.2-Prerequisite/hinh1.png)
+![hinh1](/images/5-Workshop/5.2-Prerequisite/hinh1.png)
 
 ---
 
@@ -88,13 +88,13 @@ Trong phần này, bạn sẽ tạo **policy trước**, sau đó tạo **role**
 - **Trusted entity type**: AWS service  
 - **Use case**: Lambda  
 
-![hinh2](/5-Workshop/5.2-Prerequisite/hinh2.png)
+![hinh2](/images/5-Workshop/5.2-Prerequisite/hinh2.png)
 
 ---
 
 3. Ở bước "Add permissions", tìm policy bạn vừa tạo (`lambda-bedrock`) và tick chọn nó
 
-![hinh3](/5-Workshop/5.2-Prerequisite/hinh3.png)
+![hinh3](/images/5-Workshop/5.2-Prerequisite/hinh3.png)
 
 ---
 
@@ -106,7 +106,7 @@ lambda-bedrock-role
 
 Sau đó bấm **Create role**
 
-![hinh4](/5-Workshop/5.2-Prerequisite/hinh4.png)
+![hinh4](/images/5-Workshop/5.2-Prerequisite/hinh4.png)
 
 ---
 
@@ -124,7 +124,7 @@ Trước khi viết mã gọi Converse API, bạn sẽ kiểm thử nhanh mô h�
 
 1. Mở **Amazon Bedrock → Model catalog**
 
-![hinh5](/5-Workshop/5.2-Prerequisite/hinh5.png)
+![hinh5](/images/5-Workshop/5.2-Prerequisite/hinh5.png)
 
 ---
 
@@ -133,7 +133,7 @@ Trước khi viết mã gọi Converse API, bạn sẽ kiểm thử nhanh mô h�
 2. Chọn mô hình như **Claude 3.5 Sonnet**, **Llama 3.1**, hoặc **Mistral 24.07**  
 3. Bấm **Open in playground** để mở giao diện thử nghiệm mô hình
 
-![hinh6](/5-Workshop/5.2-Prerequisite/hinh6.png)
+![hinh6](/images/5-Workshop/5.2-Prerequisite/hinh6.png)
 
 ---
 
@@ -150,7 +150,7 @@ Nếu bạn muốn kiểm tra mô hình có hỗ trợ **Converse API**, làm th
 1. Trở lại trang mô hình trong Model Catalog  
 2. Cuộn xuống phần **Code examples**
 
-![hinh7](/5-Workshop/5.2-Prerequisite/hinh7.png)
+![hinh7](/images/5-Workshop/5.2-Prerequisite/hinh7.png)
 
 3. AWS sẽ mở một tab mới hiển thị ví dụ code.
 
@@ -162,7 +162,7 @@ bedrock.converse(...)
 
 Như hình minh họa:
 
-![hinh8](/5-Workshop/5.2-Prerequisite/hinh8.png)
+![hinh8](/images/5-Workshop/5.2-Prerequisite/hinh8.png)
 
 ---
 

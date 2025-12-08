@@ -17,7 +17,7 @@ Trong bước này, bạn sẽ tạo một hàm AWS Lambda mới dùng để x�
 2. Chọn **Functions**
 3. Chọn **Create function**
 
-![h1](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h1.png)
+![h1](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h1.png)
 
 ---
 
@@ -34,7 +34,7 @@ Trong phần cấu hình:
 
 Sau đó bấm **Create function** để tạo Lambda.
 
-![h2](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h2.png)
+![h2](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h2.png)
 
 ---
 

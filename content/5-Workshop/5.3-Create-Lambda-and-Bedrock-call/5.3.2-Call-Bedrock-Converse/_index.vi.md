@@ -82,7 +82,7 @@ Tuy nhiên, **mô hình đó phải hỗ trợ Converse API**.
 
 Ví dụ minh họa:
 
-![h3](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h3.png)
+![h3](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h3.png)
 
 Hãy copy đúng Model ID này và dán vào biến:
 

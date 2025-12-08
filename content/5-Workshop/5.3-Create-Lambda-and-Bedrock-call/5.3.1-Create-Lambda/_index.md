@@ -17,7 +17,7 @@ In this step, you will create a new AWS Lambda function that will receive reques
 2. Select **Functions**  
 3. Click **Create function**
 
-![h1](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h1.png)
+![h1](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h1.png)
 
 ---
 
@@ -34,7 +34,7 @@ Configure the function as follows:
 
 Then click **Create function**.
 
-![h2](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h2.png)
+![h2](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h2.png)
 
 ---
 

@@ -15,13 +15,13 @@ In this step, you will create an HTTP API that will serve as the endpoint for cl
 
 Open the Amazon API Gateway Console and select **Create API**.
 
-![h1](/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h1.png)
+![h1](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h1.png)
 
 ---
 
 ### 🔹 Step 2 — Select **Build** under HTTP API
 
-![h2](/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h2.png)
+![h2](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h2.png)
 
 Choose:
 
@@ -31,7 +31,7 @@ Choose:
 
 ### 🔹 Step 3 — Rename the API
 
-![h3](/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h3.png)
+![h3](/images/5-Workshop/5.4-API-Gateway-Integration/5.4.1-Create-HTTP-API/h3.png)
 
 Set:
 

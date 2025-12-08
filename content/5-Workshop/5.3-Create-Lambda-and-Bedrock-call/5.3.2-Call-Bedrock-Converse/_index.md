@@ -83,7 +83,7 @@ To find the correct Model ID:
 
 Example:
 
-![h3](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h3.png)
+![h3](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h3.png)
 
 Copy this Model ID and update the variable:
 

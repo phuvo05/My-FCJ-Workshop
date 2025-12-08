@@ -22,8 +22,8 @@ Trong AWS API Gateway:
 4. Nhấp vào stage **$default**.
 5. Trong phần **Stage details**, bạn sẽ thấy **Invoke URL**.
 
-![h1](/5-Workshop/5.5-Testing-and-logs/h1.png)
-![h3](/5-Workshop/5.5-Testing-and-logs/h3.png)
+![h1](/images/5-Workshop/5.5-Testing-and-Logs/h1.png)
+![h3](/images/5-Workshop/5.5-Testing-and-Logs/h3.png)
 
 
 Sao chép **Invoke URL**, ví dụ:
@@ -64,7 +64,7 @@ https://v8p3h9umxg.execute-api.ap-southeast-1.amazonaws.com/chat
 }
 ```
 Nhấn Send để gửi request.
-![h2](/5-Workshop/5.5-Testing-and-logs/h2.png)
+![h2](/images/5-Workshop/5.5-Testing-and-Logs/h2.png)
 Nếu hệ thống hoạt động đúng, bạn sẽ nhận được phản hồi tương tự:
 {
   "answer": "Amazon Bedrock is a fully managed service..."

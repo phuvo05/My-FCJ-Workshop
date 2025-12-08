@@ -22,8 +22,8 @@ In AWS API Gateway:
 4. Click on the **$default** stage.  
 5. In the **Stage details** section, you will see the **Invoke URL**.
 
-![h1](/5-Workshop/5.5-Testing-and-Logs/h1.png)
-![h3](/5-Workshop/5.5-Testing-and-Logs/h3.png)
+![h1](/images/5-Workshop/5.5-Testing-and-Logs/h1.png)
+![h3](/images/5-Workshop/5.5-Testing-and-Logs/h3.png)
 
 Copy the **Invoke URL**, for example:
 
@@ -70,7 +70,7 @@ https://v8p3h9umxg.execute-api.ap-southeast-1.amazonaws.com/chat
 
 Click **Send** to submit the request.
 
-![h2](/5-Workshop/5.5-Testing-and-Logs/h2.png)
+![h2](/images/5-Workshop/5.5-Testing-and-Logs/h2.png)
 
 If the system is working correctly, you will receive a response similar to:
 

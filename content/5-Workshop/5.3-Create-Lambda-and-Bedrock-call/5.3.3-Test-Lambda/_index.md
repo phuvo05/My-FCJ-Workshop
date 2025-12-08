@@ -37,7 +37,7 @@ Scroll down to the JSON editor and **replace the entire content with**:
 
 Example illustration:
 
-![h4](/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h4.png)
+![h4](/images/5-Workshop/5.3-Create-Lambda-and-Bedrock-call/h4.png)
 
 Click **Save** to store the test event.
 
