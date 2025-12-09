@@ -180,6 +180,15 @@ You can view costs on the AWS Pricing Calculator, or download the attached budge
 **Long-term Value:**
 
 - Build a sustainable Vietnamese fitness community connected via online challenges.
-- Become the pioneering “AI + Fitness + Gamification” platform in Vietnam.
+- Become the pioneering "AI + Fitness + Gamification" platform in Vietnam.
 - Establish a workout data foundation to expand into health analytics, personalized training programs, and future AI projects.
+
+---
+
+### 9. Document Attachments
+
+**Full Proposal Documents:**
+
+- [FitAI Challenge Proposal (English Version)](https://docs.google.com/document/d/1AeFEG8Jqn2Q0pHPuSP1duRDKY7Ofjm9a790m7R4-Gdc/edit?usp=sharing)
+- [FitAI Challenge Proposal (Vietnamese Version)](https://docs.google.com/document/d/1o8jOyfRCc5Y6LWNi4c96bCFBOI5xPi3U7VQwM1WTOGs/edit?usp=sharing)
 

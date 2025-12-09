@@ -214,6 +214,15 @@ Có thể xem chi phí trên AWS Pricing Calculator hoặc tải tệp ước t�
 **Giá trị dài hạn:**
 
 - Xây dựng cộng đồng người Việt yêu thích thể thao và sức khỏe bền vững, gắn kết qua các thử thách online.
-- Trở thành nền tảng tiên phong “AI + Fitness + Gamification” tại Việt Nam.
+- Trở thành nền tảng tiên phong "AI + Fitness + Gamification" tại Việt Nam.
 - Tạo nền tảng dữ liệu luyện tập để mở rộng sang các bài toán phân tích sức khỏe, gợi ý chương trình tập cá nhân hóa và các dự án AI trong tương lai.
+
+---
+
+### 9. Tài liệu đính kèm
+
+**Tài liệu đề xuất đầy đủ:**
+
+- [FitAI Challenge Proposal (Bản tiếng Anh)](https://docs.google.com/document/d/1AeFEG8Jqn2Q0pHPuSP1duRDKY7Ofjm9a790m7R4-Gdc/edit?usp=sharing)
+- [FitAI Challenge Proposal (Bản tiếng Việt)](https://docs.google.com/document/d/1o8jOyfRCc5Y6LWNi4c96bCFBOI5xPi3U7VQwM1WTOGs/edit?usp=sharing)
 
